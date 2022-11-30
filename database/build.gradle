@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 android {
@@ -31,12 +32,18 @@ android {
 }
 
 dependencies {
-
+    def room_version = "2.4.3"
 
     implementation "androidx.core:core-ktx:$kotlin_version"
 
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     // Test libraries
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.room:room-testing:$room_version"
 
     // Android Test libraries
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
