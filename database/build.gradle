@@ -34,7 +34,9 @@ android {
 dependencies {
     def room_version = "2.4.3"
 
+    // Kotlin
     implementation "androidx.core:core-ktx:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
