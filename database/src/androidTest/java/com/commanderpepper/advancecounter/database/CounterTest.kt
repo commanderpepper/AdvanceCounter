@@ -40,13 +40,20 @@ class CounterTest {
     }
 
     @Test
-    fun insertCountersGetCounterList() = runTest {
+    fun getCounterListCheckIsEmpty() = runTest {
+        counterDAO.getCounters().test {
+            Assert.assertTrue(awaitItem().isEmpty())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun insertCountersGetCounterListCheckNotEmpty() = runTest {
         val counter = Counter(name = "Test", value = 1L)
         counterDAO.insertCounter(counter)
         counterDAO.insertCounter(counter)
-        val counterFlow = counterDAO.getCounters()
-        counterFlow.test {
-            Assert.assertTrue(awaitItem().size == 2)
+        counterDAO.getCounters().test {
+            Assert.assertTrue(awaitItem().isNotEmpty())
             cancelAndIgnoreRemainingEvents()
         }
     }
