@@ -49,4 +49,8 @@ dependencies {
 
     // Android Test libraries
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+
+    // Turbine for Flow testing
+    testImplementation "app.cash.turbine:turbine:$turbine_version"
+    androidTestImplementation "app.cash.turbine:turbine:$turbine_version"
 }
