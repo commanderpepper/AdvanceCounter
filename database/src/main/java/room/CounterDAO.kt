@@ -13,4 +13,7 @@ interface CounterDAO {
 
     @Insert
     suspend fun insertCounter(counter: Counter)
+
+    @Query("SELECT * FROM counter WHERE id = :counterId")
+    suspend fun getCounter(counterId: Long): Counter?
 }

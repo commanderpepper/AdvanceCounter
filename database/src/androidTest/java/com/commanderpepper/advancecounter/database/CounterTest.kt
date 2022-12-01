@@ -48,6 +48,22 @@ class CounterTest {
     }
 
     @Test
+    fun getNonExistentCounterCheckCounterIsNull() = runTest {
+        val counterThatShouldBeNull = counterDAO.getCounter(0L)
+        Assert.assertNull(counterThatShouldBeNull)
+    }
+
+    @Test
+    fun insertCounterGetCounterCheckIfEqual() = runTest {
+        val counterToInsert = Counter(name = "Counter One", value = 10L)
+        counterDAO.insertCounter(counterToInsert)
+        val counterFromDB = counterDAO.getCounter(1L)
+        Assert.assertTrue(counterFromDB != null)
+        Assert.assertTrue(counterFromDB!!.name == "Counter One")
+        Assert.assertTrue(counterFromDB!!.value == 10L)
+    }
+
+    @Test
     fun insertCountersGetCounterListCheckNotEmpty() = runTest {
         val counter = Counter(name = "Test", value = 1L)
         counterDAO.insertCounter(counter)
