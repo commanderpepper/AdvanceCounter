@@ -61,11 +61,11 @@ class CounterTest {
         Assert.assertNotNull(firstCounterFromDao)
         Assert.assertTrue(firstCounterFromDao!!.name == "Counter")
 
-        counterDAO.updateCounter(firstCounterFromDao!!.copy(value = 5L))
+        counterDAO.updateCounter(firstCounterFromDao.copy(value = 5L))
         val secondCounterFromDao = counterDAO.getCounter(1L)
         Assert.assertNotNull(secondCounterFromDao)
         Assert.assertTrue(secondCounterFromDao!!.name == "Counter")
-        Assert.assertTrue(secondCounterFromDao!!.value == 5L)
+        Assert.assertTrue(secondCounterFromDao.value == 5L)
 
         counterDAO.getCounters().test {
             Assert.assertTrue(awaitItem().size == 1)
@@ -80,7 +80,7 @@ class CounterTest {
         val counterFromDB = counterDAO.getCounter(1L)
         Assert.assertTrue(counterFromDB != null)
         Assert.assertTrue(counterFromDB!!.name == "Counter One")
-        Assert.assertTrue(counterFromDB!!.value == 10L)
+        Assert.assertTrue(counterFromDB.value == 10L)
     }
 
     @Test
