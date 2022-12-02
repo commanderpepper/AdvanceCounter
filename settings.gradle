@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "AdvanceCounter"
 include ':app'
 include ':database'
+include ':data'
