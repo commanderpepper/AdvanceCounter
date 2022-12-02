@@ -54,6 +54,26 @@ class CounterTest {
     }
 
     @Test
+    fun insertCounterUpdateCounterGetCounterCheckIfCounterRetrievedWasUpdated() = runTest {
+        val counterToInsert = Counter(name = "Counter")
+        counterDAO.insertCounter(counterToInsert)
+        val firstCounterFromDao = counterDAO.getCounter(1L)
+        Assert.assertNotNull(firstCounterFromDao)
+        Assert.assertTrue(firstCounterFromDao!!.name == "Counter")
+
+        counterDAO.updateCounter(firstCounterFromDao!!.copy(value = 5L))
+        val secondCounterFromDao = counterDAO.getCounter(1L)
+        Assert.assertNotNull(secondCounterFromDao)
+        Assert.assertTrue(secondCounterFromDao!!.name == "Counter")
+        Assert.assertTrue(secondCounterFromDao!!.value == 5L)
+
+        counterDAO.getCounters().test {
+            Assert.assertTrue(awaitItem().size == 1)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun insertCounterGetCounterCheckIfEqual() = runTest {
         val counterToInsert = Counter(name = "Counter One", value = 10L)
         counterDAO.insertCounter(counterToInsert)
