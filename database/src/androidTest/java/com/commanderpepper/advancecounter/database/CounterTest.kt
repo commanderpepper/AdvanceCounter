@@ -74,6 +74,27 @@ class CounterTest {
     }
 
     @Test
+    fun insertTwoParentCountersAndOneChildCounterGetParentCountersCheckListSizeIsTwo() = runTest {
+        val parentCounterOne = Counter(name = "Parent One")
+        val parentCounterTwo = Counter(name = "Parent Two")
+        val childCounterOne = Counter(name = "Child Counter", parentId = 1L)
+
+        counterDAO.insertCounter(parentCounterOne)
+        counterDAO.insertCounter(parentCounterTwo)
+        counterDAO.insertCounter(childCounterOne)
+
+        counterDAO.getParentCounters().test {
+            Assert.assertTrue(awaitItem().size == 2)
+            cancelAndIgnoreRemainingEvents()
+        }
+
+        counterDAO.getCounters().test {
+            Assert.assertTrue(awaitItem().size == 3)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun insertCounterGetCounterCheckIfEqual() = runTest {
         val counterToInsert = Counter(name = "Counter One", value = 10L)
         counterDAO.insertCounter(counterToInsert)

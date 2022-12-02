@@ -12,6 +12,9 @@ interface CounterDAO {
     @Query("SELECT * FROM counter")
     fun getCounters(): Flow<List<Counter>>
 
+    @Query("SELECT * FROM counter WHERE parentId IS NULL")
+    fun getParentCounters(): Flow<List<Counter>>
+
     @Insert
     suspend fun insertCounter(counter: Counter)
 

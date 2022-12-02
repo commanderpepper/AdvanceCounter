@@ -10,5 +10,6 @@ data class Counter (
     val id: Long = 0,
     val name: String,
     @ColumnInfo(defaultValue = "0")
-    val value: Long = 0
+    val value: Long = 0,
+    val parentId: Long? = null
 )
