@@ -41,9 +41,19 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
     testImplementation 'junit:junit:4.13.2'
 
-    // Android Test
+    // Android Test libraries
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+
+    // Mockito
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
+    testImplementation "io.mockk:mockk:1.12.4"
+
+    // Turbine for Flow testing
+    testImplementation "app.cash.turbine:turbine:$turbine_version"
+    androidTestImplementation "app.cash.turbine:turbine:$turbine_version"
 
     implementation project(path: ':database')
 }

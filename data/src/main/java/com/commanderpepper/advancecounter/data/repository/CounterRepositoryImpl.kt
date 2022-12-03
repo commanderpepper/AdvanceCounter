@@ -8,7 +8,7 @@ import room.CounterDAO
 
 class CounterRepositoryImpl(private val counterDAO: CounterDAO): CounterRepository {
     override fun getParentCounters(): Flow<List<CounterRepo>> {
-        return counterDAO.getCounters().map {
+        return counterDAO.getParentCounters().map {
             it.map { counter ->
                 CounterRepo(
                     id = counter.id,
