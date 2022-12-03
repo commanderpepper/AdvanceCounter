@@ -27,7 +27,7 @@ class CounterRepositoryTest {
     private lateinit var counterRepository: CounterRepository
 
     @Before
-    fun setUpMocks(){
+    fun setUpMocks() {
         counterDao = mock(CounterDAO::class.java)
         counterRepository = CounterRepositoryImpl(counterDao)
     }
@@ -40,6 +40,21 @@ class CounterRepositoryTest {
 
         counterRepository.getParentCounters().test {
             Assert.assertTrue(awaitItem().size == 1)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `receive a flow of child counters check that list size is two`() = runTest {
+        Mockito.`when`(counterDao.getChildCounters(1L)).thenReturn(flow {
+            emit(listOf(
+                Counter(0, "", 0, 1L),
+                Counter(1, "", 0, 1L)
+            ))
+        })
+
+        counterRepository.getChildCounters(1L).test {
+            Assert.assertTrue(awaitItem().size == 2)
             cancelAndIgnoreRemainingEvents()
         }
     }
