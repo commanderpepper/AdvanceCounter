@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 android {
@@ -55,6 +56,11 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.compose.material3:material3:1.1.0-alpha02'
     implementation project(path: ':data')
+
+    // Hilt
+    implementation 'com.google.dagger:hilt-android:2.44'
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    kapt 'com.google.dagger:hilt-compiler:2.42'
 
     testImplementation 'junit:junit:4.13.2'
 
