@@ -18,7 +18,8 @@ fun ParentCounters(
     ParentCounters(
         modifier = modifier,
         parentCounters = parentCountersViewModel.parentCounters,
-        parentCounterOnClick = parentCountersViewModel::parentCounterOnClick
+        onPlusClicked = parentCountersViewModel::plusButtonOnClick,
+        onMinusClicked = parentCountersViewModel::minusButtonOnClick
     )
 }
 
@@ -26,14 +27,16 @@ fun ParentCounters(
 fun ParentCounters(
     modifier: Modifier = Modifier,
     parentCounters: StateFlow<List<CounterItemUIState>>,
-    parentCounterOnClick: (Long) -> Unit
+    onPlusClicked: (Long) -> Unit,
+    onMinusClicked: (Long) -> Unit
 ) {
     val parentCountersState = parentCounters.collectAsState()
     LazyColumn(modifier = modifier) {
         items(items = parentCountersState.value, itemContent = { item ->
             CounterItem(
                 counterItemUIState = item,
-                counterOnClick = parentCounterOnClick
+                onMinusClicked = onMinusClicked,
+                onPlusClicked = onPlusClicked
             )
         })
     }
