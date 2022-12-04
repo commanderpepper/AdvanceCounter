@@ -5,8 +5,9 @@ import com.commanderpepper.advancecounter.database.model.Counter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.commanderpepper.advancecounter.database.room.CounterDAO
+import javax.inject.Inject
 
-class CounterRepositoryImpl(private val counterDAO: CounterDAO): CounterRepository {
+class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterDAO): CounterRepository {
     override fun getParentCounters(): Flow<List<CounterRepo>> {
         return counterDAO.getParentCounters().map {
             it.map { counter ->
