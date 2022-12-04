@@ -1,4 +1,4 @@
-package room
+package com.commanderpepper.advancecounter.database.room
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -5,8 +5,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
-import room.CounterDAO
-import room.CounterDatabase
+import com.commanderpepper.advancecounter.database.room.CounterDAO
+import com.commanderpepper.advancecounter.database.room.CounterDatabase
 import java.io.IOException
 import android.content.Context
 import androidx.room.Room
