@@ -34,6 +34,16 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         }
     }
 
+    override suspend fun getCounter(counterId: Long): CounterRepo {
+        val counter = counterDAO.getCounter(counterId)!!
+        return CounterRepo(
+            id = counter.id,
+            name = counter.name,
+            value = counter.value.toString(),
+            parentId = counter.parentId
+        )
+    }
+
     override suspend fun insertCounter(counterRepo: CounterRepo) {
         counterDAO.insertCounter(
             Counter(

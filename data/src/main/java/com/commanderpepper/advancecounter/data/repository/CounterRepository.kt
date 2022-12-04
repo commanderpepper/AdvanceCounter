@@ -8,6 +8,8 @@ interface CounterRepository {
 
     fun getChildCounters(parentId: Long): Flow<List<CounterRepo>>
 
+    suspend fun getCounter(counterId: Long): CounterRepo
+
     suspend fun insertCounter(counterRepo: CounterRepo)
 
     suspend fun updateCounter(counterRepo: CounterRepo)

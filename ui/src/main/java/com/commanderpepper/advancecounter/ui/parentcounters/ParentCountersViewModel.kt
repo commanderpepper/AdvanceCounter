@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,9 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
     )
 
     fun parentCounterOnClick(parentCounterId: Long){
-//        counterRepository.updateCounter()
+        viewModelScope.launch {
+            val current = counterRepository.getCounter(parentCounterId)
+            counterRepository.updateCounter(current.copy(value = (current.value.toLong() + 1).toString()))
+        }
     }
 }
