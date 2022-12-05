@@ -63,4 +63,14 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         )
     }
 
+    override suspend fun incrementCounter(counterId: Long) {
+        val current = getCounter(counterId)
+        updateCounter(current.copy(value = current.value + 1))
+    }
+
+    override suspend fun decrementCounter(counterId: Long) {
+        val current = getCounter(counterId)
+        updateCounter(current.copy(value = current.value - 1))
+    }
+
 }

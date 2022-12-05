@@ -29,15 +29,13 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
 
     fun plusButtonOnClick(parentCounterId: Long){
         viewModelScope.launch {
-            val current = counterRepository.getCounter(parentCounterId)
-            counterRepository.updateCounter(current.copy(value = (current.value + 1)))
+            counterRepository.incrementCounter(parentCounterId)
         }
     }
 
     fun minusButtonOnClick(parentCounterId: Long){
         viewModelScope.launch {
-            val current = counterRepository.getCounter(parentCounterId)
-            counterRepository.updateCounter(current.copy(value = (current.value - 1)))
+            counterRepository.decrementCounter(parentCounterId)
         }
     }
 }

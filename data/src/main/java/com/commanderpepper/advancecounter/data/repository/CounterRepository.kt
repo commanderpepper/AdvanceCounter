@@ -13,4 +13,8 @@ interface CounterRepository {
     suspend fun insertCounter(counterRepo: CounterRepo)
 
     suspend fun updateCounter(counterRepo: CounterRepo)
+
+    suspend fun incrementCounter(counterId: Long)
+
+    suspend fun decrementCounter(counterId: Long)
 }
