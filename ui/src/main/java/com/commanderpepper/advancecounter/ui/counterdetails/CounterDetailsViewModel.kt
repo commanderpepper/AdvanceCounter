@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.commanderpepper.advancecounter.data.model.CounterRepo
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
+import com.commanderpepper.advancecounter.ui.AddCounterState
 import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -39,6 +40,19 @@ class CounterDetailsViewModel @Inject constructor (
                     id = parentCounter.id,
                     name = parentCounter.name,
                     value = parentCounter.value.toString()
+                )
+            )
+        }
+    }
+
+    fun addCounter(addCounterState: AddCounterState){
+        viewModelScope.launch {
+            counterRepository.insertCounter(
+                CounterRepo(
+                    id = 0L,
+                    name = addCounterState.name,
+                    value = addCounterState.value,
+                    parentId = savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )
         }
