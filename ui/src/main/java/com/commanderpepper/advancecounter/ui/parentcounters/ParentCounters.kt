@@ -1,11 +1,17 @@
 package com.commanderpepper.advancecounter.ui.parentcounters
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.commanderpepper.advancecounter.ui.AddCounterDialog
 import com.commanderpepper.advancecounter.ui.items.CounterItem
 import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +21,27 @@ fun ParentCounters(
     modifier: Modifier = Modifier,
     parentCountersViewModel: ParentCountersViewModel = hiltViewModel()
 ) {
-    ParentCounters(
-        modifier = modifier,
-        parentCounters = parentCountersViewModel.parentCounters,
-        onPlusClicked = parentCountersViewModel::plusButtonOnClick,
-        onMinusClicked = parentCountersViewModel::minusButtonOnClick
-    )
+    Column {
+        val openDialog = remember { mutableStateOf(false) }
+
+        Button(onClick = { openDialog.value = true }) {
+            Text(text = "Add new counter")
+        }
+        ParentCounters(
+            modifier = modifier,
+            parentCounters = parentCountersViewModel.parentCounters,
+            onPlusClicked = parentCountersViewModel::plusButtonOnClick,
+            onMinusClicked = parentCountersViewModel::minusButtonOnClick
+        )
+        if (openDialog.value) {
+            AddCounterDialog(
+                onDismissRequest = { openDialog.value = false },
+                onConfirmClick = {
+                    parentCountersViewModel.addNewParentCounter(it)
+                    openDialog.value = false
+                })
+        }
+    }
 }
 
 @Composable
