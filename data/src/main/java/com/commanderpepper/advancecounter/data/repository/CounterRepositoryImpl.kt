@@ -14,7 +14,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 CounterRepo(
                     id = counter.id,
                     name = counter.name,
-                    value = counter.value.toString(),
+                    value = counter.value,
                     parentId = counter.parentId
                 )
             }
@@ -27,7 +27,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 CounterRepo (
                     id = counter.id,
                     name = counter.name,
-                    value = counter.value.toString(),
+                    value = counter.value,
                     parentId = counter.parentId
                 )
             }
@@ -39,7 +39,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         return CounterRepo(
             id = counter.id,
             name = counter.name,
-            value = counter.value.toString(),
+            value = counter.value,
             parentId = counter.parentId
         )
     }
@@ -48,7 +48,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         counterDAO.insertCounter(
             Counter(
                 name = counterRepo.name,
-                value = counterRepo.value.toLong(),
+                value = counterRepo.value,
                 parentId = counterRepo.parentId)
         )
     }
@@ -58,7 +58,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             Counter(
                 id = counterRepo.id,
                 name = counterRepo.name,
-                value = counterRepo.value.toLong(),
+                value = counterRepo.value,
                 parentId = counterRepo.parentId)
         )
     }

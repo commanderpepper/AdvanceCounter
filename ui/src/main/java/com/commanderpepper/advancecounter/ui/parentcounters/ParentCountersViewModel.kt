@@ -18,7 +18,7 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
             CounterItemUIState(
                 id = counterRepo.id,
                 name = counterRepo.name,
-                value = counterRepo.value
+                value = counterRepo.value.toString()
             )
         }
     }.stateIn(
@@ -30,14 +30,14 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
     fun plusButtonOnClick(parentCounterId: Long){
         viewModelScope.launch {
             val current = counterRepository.getCounter(parentCounterId)
-            counterRepository.updateCounter(current.copy(value = (current.value.toLong() + 1).toString()))
+            counterRepository.updateCounter(current.copy(value = (current.value + 1)))
         }
     }
 
     fun minusButtonOnClick(parentCounterId: Long){
         viewModelScope.launch {
             val current = counterRepository.getCounter(parentCounterId)
-            counterRepository.updateCounter(current.copy(value = (current.value.toLong() - 1).toString()))
+            counterRepository.updateCounter(current.copy(value = (current.value - 1)))
         }
     }
 }
