@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.commanderpepper.advancecounter.ui.counterdetails.CounterDetails
 import com.commanderpepper.advancecounter.ui.parentcounters.ParentCounters
 import com.commanderpepper.advancecounter.ui.theme.AdvanceCounterTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +26,24 @@ class AdvanceCounterActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ParentCounters()
+                    val navController = rememberNavController()
+
+                    NavHost(navController = navController, startDestination = "counter/parents"){
+                        composable("counter/parents"){
+                            ParentCounters(){ id ->
+                                navController.navigate(
+                                    "counters/?counterId={counterId}".replace(
+                                        oldValue = "{counterId}",
+                                        newValue = id.toString()
+                                    )
+                                )
+                            }
+                        }
+                        composable("counters/?counterId={counterId}"){ entry ->
+                            val url = entry.arguments?.getString("counterId")
+                            CounterDetails()
+                        }
+                    }
                 }
             }
         }

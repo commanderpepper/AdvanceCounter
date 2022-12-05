@@ -23,7 +23,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ParentCounters(
     modifier: Modifier = Modifier,
-    parentCountersViewModel: ParentCountersViewModel = hiltViewModel()
+    parentCountersViewModel: ParentCountersViewModel = hiltViewModel(),
+    counterOnClick: (Long) -> Unit
 ) {
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -31,6 +32,7 @@ fun ParentCounters(
         ParentCounters(
             modifier = modifier,
             parentCounters = parentCountersViewModel.parentCounters,
+            counterOnClick = counterOnClick,
             onPlusClicked = parentCountersViewModel::plusButtonOnClick,
             onMinusClicked = parentCountersViewModel::minusButtonOnClick
         )
@@ -56,6 +58,7 @@ fun ParentCounters(
 fun ParentCounters(
     modifier: Modifier = Modifier,
     parentCounters: StateFlow<List<CounterItemUIState>>,
+    counterOnClick: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit
 ) {
@@ -64,6 +67,7 @@ fun ParentCounters(
         items(items = parentCountersState.value, itemContent = { item ->
             CounterItem(
                 counterItemUIState = item,
+                counterClicked = counterOnClick,
                 onMinusClicked = onMinusClicked,
                 onPlusClicked = onPlusClicked
             )

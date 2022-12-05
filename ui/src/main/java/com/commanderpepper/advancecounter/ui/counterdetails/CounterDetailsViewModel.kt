@@ -9,14 +9,15 @@ import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class CounterDetailsViewModel(
+class CounterDetailsViewModel @Inject constructor (
     private val counterRepository: CounterRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val childCounters = counterRepository.getChildCounters(savedStateHandle.get<Long>("parentID")!!).map { list ->
+    val childCounters = counterRepository.getChildCounters(savedStateHandle.get<String>("counterId")!!.toLong()).map { list ->
         list.map { counterRepo ->
             CounterItemUIState(
                 id = counterRepo.id,
@@ -32,7 +33,7 @@ class CounterDetailsViewModel(
     init {
         viewModelScope.launch {
             val parentCounter =
-                counterRepository.getCounter(savedStateHandle.get<Long>("parentID")!!)
+                counterRepository.getCounter(savedStateHandle.get<String>("counterId")!!.toLong())
             _parentCounter.emit(
                 CounterItemUIState(
                     id = parentCounter.id,

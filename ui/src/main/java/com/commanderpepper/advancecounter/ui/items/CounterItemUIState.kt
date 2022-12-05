@@ -1,5 +1,6 @@
 package com.commanderpepper.advancecounter.ui.items
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -20,18 +21,36 @@ data class CounterItemUIState(
 fun CounterItem(
     modifier: Modifier = Modifier,
     counterItemUIState: CounterItemUIState,
+    counterClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
 ) {
     Card(modifier = modifier.padding(8.dp)) {
         Column() {
-            Text(modifier = Modifier.padding(4.dp), text = "Name: ${counterItemUIState.name}, ID: ${counterItemUIState.id}", style = MaterialTheme.typography.labelLarge)
-            Text(modifier = Modifier.padding(4.dp), text = "Value: ${counterItemUIState.value}", style = MaterialTheme.typography.labelLarge)
-            Row(modifier = Modifier.padding(4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                Button(modifier = Modifier.weight(1f), onClick = { onMinusClicked(counterItemUIState.id) }) {
+            Column(modifier = Modifier.clickable { counterClicked(counterItemUIState.id) }) {
+                Text(
+                    modifier = Modifier.padding(4.dp),
+                    text = "Name: ${counterItemUIState.name}, ID: ${counterItemUIState.id}",
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Text(
+                    modifier = Modifier.padding(4.dp),
+                    text = "Value: ${counterItemUIState.value}",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+            Row(
+                modifier = Modifier.padding(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = { onMinusClicked(counterItemUIState.id) }) {
                     Text(text = "-")
                 }
-                Button(modifier = Modifier.weight(1f), onClick = { onPlusClicked(counterItemUIState.id) }) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = { onPlusClicked(counterItemUIState.id) }) {
                     Text(text = "+")
                 }
             }
@@ -42,6 +61,10 @@ fun CounterItem(
 
 @Preview
 @Composable
-fun CounterItemPreview(){
-    CounterItem(counterItemUIState = CounterItemUIState(1L, "Test", "10"), onMinusClicked = {}, onPlusClicked = {})
+fun CounterItemPreview() {
+    CounterItem(
+        counterItemUIState = CounterItemUIState(1L, "Test", "10"),
+        counterClicked = {},
+        onMinusClicked = {},
+        onPlusClicked = {})
 }
