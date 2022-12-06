@@ -72,7 +72,7 @@ class CounterRepositoryWithRoomTest {
                 lowerThreshold = -10L
             )
         )
-        repeat(10){
+        repeat(10) {
             counterRepository.incrementCounter(1L)
         }
 
@@ -94,6 +94,7 @@ class CounterRepositoryWithRoomTest {
         )
         counterRepository.incrementCounter(1L)
         Assert.assertEquals(6L, counterRepository.getCounter(1L).upperThreshold)
+        Assert.assertEquals(4L, counterRepository.getCounter(1L).lowerThreshold)
     }
 
     @Test
@@ -111,6 +112,7 @@ class CounterRepositoryWithRoomTest {
         )
         counterRepository.decrementCounter(1L)
         Assert.assertEquals(-6L, counterRepository.getCounter(1L).lowerThreshold)
+        Assert.assertEquals(-4L, counterRepository.getCounter(1L).upperThreshold)
     }
 
     @Test
@@ -128,6 +130,7 @@ class CounterRepositoryWithRoomTest {
         )
         counterRepository.incrementCounter(1L)
         Assert.assertEquals(2L, counterRepository.getCounter(1L).upperThreshold)
+        Assert.assertEquals(-2L, counterRepository.getCounter(1L).lowerThreshold)
     }
 
     @Test
@@ -144,6 +147,47 @@ class CounterRepositoryWithRoomTest {
             )
         )
         counterRepository.decrementCounter(1L)
+        Assert.assertEquals(2L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(-2L, counterRepository.getCounter(1L).lowerThreshold)
+    }
+
+    @Test
+    fun insertCounterWhereStepIsSmallerThanThresholdThenIncrementFiveTimesCheckThreshold() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0L,
+                name = "Test",
+                value = 0L,
+                parentId = null,
+                step = 1,
+                upperThreshold = 5L,
+                lowerThreshold = -5L
+            )
+        )
+        repeat(5) {
+            counterRepository.incrementCounter(1L)
+        }
+        Assert.assertEquals(10L, counterRepository.getCounter(1L).upperThreshold)
+        Assert.assertEquals(0L, counterRepository.getCounter(1L).lowerThreshold)
+    }
+
+    @Test
+    fun insertCounterWhereStepIsSmallerThanThresholdThenDecrementFiveTimesCheckThreshold() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0L,
+                name = "Test",
+                value = 0L,
+                parentId = null,
+                step = 1,
+                upperThreshold = 5L,
+                lowerThreshold = -5L
+            )
+        )
+        repeat(5) {
+            counterRepository.decrementCounter(1L)
+        }
+        Assert.assertEquals(0L, counterRepository.getCounter(1L).upperThreshold)
+        Assert.assertEquals(-10L, counterRepository.getCounter(1L).lowerThreshold)
     }
 }

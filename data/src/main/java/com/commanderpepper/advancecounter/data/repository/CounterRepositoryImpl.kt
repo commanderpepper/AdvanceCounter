@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.commanderpepper.advancecounter.database.room.CounterDAO
 import javax.inject.Inject
+import kotlin.math.abs
 
 class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterDAO): CounterRepository {
     override fun getParentCounters(): Flow<List<CounterRepo>> {
@@ -85,11 +86,14 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         if(nextValue >= current.upperThreshold){
             var currentThreshold = current.upperThreshold
 
-            while(currentThreshold < nextValue){
+            while(currentThreshold <= nextValue){
                 currentThreshold += current.upperThreshold
             }
 
-            updateCounter(current.copy(value = nextValue, upperThreshold = currentThreshold))
+            val difference = currentThreshold - nextValue
+            val lowerThreshold = nextValue - difference
+
+            updateCounter(current.copy(value = nextValue, upperThreshold = currentThreshold, lowerThreshold = lowerThreshold))
         }
         else {
             updateCounter(current.copy(value = nextValue))
@@ -103,11 +107,14 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         if(nextValue <= current.lowerThreshold){
             var currentThreshold = current.lowerThreshold
 
-            while(currentThreshold > nextValue){
+            while(currentThreshold >= nextValue){
                 currentThreshold += current.lowerThreshold
             }
 
-            updateCounter(current.copy(value = nextValue, lowerThreshold = currentThreshold))
+            val difference = abs(currentThreshold - nextValue)
+            val upperThreshold = nextValue + difference
+
+            updateCounter(current.copy(value = nextValue, lowerThreshold = currentThreshold, upperThreshold = upperThreshold))
         }
         else {
             updateCounter(current.copy(value = nextValue))
