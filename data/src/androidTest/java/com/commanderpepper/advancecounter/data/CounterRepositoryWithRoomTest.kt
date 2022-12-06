@@ -112,4 +112,38 @@ class CounterRepositoryWithRoomTest {
         counterRepository.decrementCounter(1L)
         Assert.assertEquals(-6L, counterRepository.getCounter(1L).lowerThreshold)
     }
+
+    @Test
+    fun insertCounterWhereStepIsSmallerThanThresholdThenIncrementThenCheckThreshold() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0L,
+                name = "Test",
+                value = 0L,
+                parentId = null,
+                step = 1,
+                upperThreshold = 2L,
+                lowerThreshold = -2L
+            )
+        )
+        counterRepository.incrementCounter(1L)
+        Assert.assertEquals(2L, counterRepository.getCounter(1L).upperThreshold)
+    }
+
+    @Test
+    fun insertCounterWhereStepIsSmallerThanThresholdThenDecrementThenCheckThreshold() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0L,
+                name = "Test",
+                value = 0L,
+                parentId = null,
+                step = 1,
+                upperThreshold = 2L,
+                lowerThreshold = -2L
+            )
+        )
+        counterRepository.decrementCounter(1L)
+        Assert.assertEquals(-2L, counterRepository.getCounter(1L).lowerThreshold)
+    }
 }
