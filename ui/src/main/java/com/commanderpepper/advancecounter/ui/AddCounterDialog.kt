@@ -24,6 +24,9 @@ fun AddCounterDialog(
     val counterValue = remember {
         mutableStateOf("")
     }
+    val counterStep = remember {
+        mutableStateOf("")
+    }
 
     AlertDialog(
         modifier = modifier,
@@ -56,6 +59,18 @@ fun AddCounterDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = MaterialTheme.typography.bodyMedium
                 )
+                TextField(
+                    value = counterStep.value,
+                    label = {
+                        Text(text = "Step", style = MaterialTheme.typography.labelSmall)
+                    },
+                    placeholder = {
+                        Text(text = "1", style = MaterialTheme.typography.bodyMedium)
+                    },
+                    onValueChange = { counterStep.value = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    textStyle = MaterialTheme.typography.bodyMedium
+                )
             }
         },
         dismissButton = {
@@ -68,7 +83,8 @@ fun AddCounterDialog(
                 onConfirmClick(
                     AddCounterState(
                         name = counterName.value,
-                        value = if(counterValue.value.isEmpty()) 0 else counterValue.value.toLong()
+                        value = if(counterValue.value.isEmpty()) 0 else counterValue.value.toLong(),
+                        step =  if(counterStep.value.isEmpty()) 1 else counterStep.value.toLong()
                     )
                 )
             }) {
@@ -79,4 +95,4 @@ fun AddCounterDialog(
     )
 }
 
-data class AddCounterState(val name: String, val value: Long)
+data class AddCounterState(val name: String, val value: Long, val step: Long = 1)

@@ -52,6 +52,7 @@ class CounterDetailsViewModel @Inject constructor (
                     id = 0L,
                     name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
+                    step = addCounterState.step,
                     parentId = savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )

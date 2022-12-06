@@ -15,6 +15,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     id = counter.id,
                     name = counter.name,
                     value = counter.value,
+                    step = counter.step,
                     parentId = counter.parentId
                 )
             }
@@ -28,6 +29,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     id = counter.id,
                     name = counter.name,
                     value = counter.value,
+                    step = counter.step,
                     parentId = counter.parentId
                 )
             }
@@ -40,6 +42,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             id = counter.id,
             name = counter.name,
             value = counter.value,
+            step = counter.step,
             parentId = counter.parentId
         )
     }
@@ -49,6 +52,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             Counter(
                 name = counterRepo.name,
                 value = counterRepo.value,
+                step = counterRepo.step,
                 parentId = counterRepo.parentId)
         )
     }
@@ -59,18 +63,19 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 id = counterRepo.id,
                 name = counterRepo.name,
                 value = counterRepo.value,
+                step = counterRepo.step,
                 parentId = counterRepo.parentId)
         )
     }
 
     override suspend fun incrementCounter(counterId: Long) {
         val current = getCounter(counterId)
-        updateCounter(current.copy(value = current.value + 1))
+        updateCounter(current.copy(value = current.value + current.step))
     }
 
     override suspend fun decrementCounter(counterId: Long) {
         val current = getCounter(counterId)
-        updateCounter(current.copy(value = current.value - 1))
+        updateCounter(current.copy(value = current.value - current.step))
     }
 
 }
