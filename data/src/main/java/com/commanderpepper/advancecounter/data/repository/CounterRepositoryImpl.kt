@@ -16,7 +16,8 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
-                    threshold = counter.threshold,
+                    upperThreshold = counter.upperThreshold,
+                    lowerThreshold = counter.lowerThreshold,
                     parentId = counter.parentId
                 )
             }
@@ -31,7 +32,8 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
-                    threshold = counter.threshold,
+                    upperThreshold = counter.upperThreshold,
+                    lowerThreshold = counter.lowerThreshold,
                     parentId = counter.parentId
                 )
             }
@@ -45,7 +47,8 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             name = counter.name,
             value = counter.value,
             step = counter.step,
-            threshold = counter.threshold,
+            upperThreshold = counter.upperThreshold,
+            lowerThreshold = counter.lowerThreshold,
             parentId = counter.parentId
         )
     }
@@ -56,7 +59,8 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
-                threshold = counterRepo.threshold,
+                upperThreshold = counterRepo.upperThreshold,
+                lowerThreshold = counterRepo.lowerThreshold,
                 parentId = counterRepo.parentId)
         )
     }
@@ -68,19 +72,46 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
-                threshold = counterRepo.threshold,
+                upperThreshold = counterRepo.upperThreshold,
+                lowerThreshold = counterRepo.lowerThreshold,
                 parentId = counterRepo.parentId)
         )
     }
 
     override suspend fun incrementCounter(counterId: Long) {
         val current = getCounter(counterId)
-        updateCounter(current.copy(value = current.value + current.step))
+        val nextValue = current.value + current.step
+        // Inform others counters if true
+        if(nextValue >= current.upperThreshold){
+            var currentThreshold = current.upperThreshold
+
+            while(currentThreshold < nextValue){
+                currentThreshold += currentThreshold
+            }
+
+            updateCounter(current.copy(value = nextValue, upperThreshold = currentThreshold))
+        }
+        else {
+            updateCounter(current.copy(value = nextValue))
+        }
     }
 
     override suspend fun decrementCounter(counterId: Long) {
         val current = getCounter(counterId)
-        updateCounter(current.copy(value = current.value - current.step))
+        val nextValue = current.value - current.step
+        // Inform others counters if true
+        if(nextValue <= current.lowerThreshold){
+            var currentThreshold = current.lowerThreshold
+
+            while(currentThreshold > nextValue){
+                currentThreshold += currentThreshold
+            }
+
+            updateCounter(current.copy(value = nextValue, lowerThreshold = currentThreshold))
+        }
+        else {
+            updateCounter(current.copy(value = nextValue))
+        }
     }
 
 }

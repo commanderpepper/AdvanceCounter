@@ -9,7 +9,8 @@ import androidx.room.PrimaryKey
  * @param name name of the counter
  * @param value value of the counter
  * @param step value that the counter changes when the user increment / decrements
- * @param threshold next value that will trigger an event informing other counters
+ * @param upperThreshold next upper value that will trigger an event informing other counters
+ * @param lowerThreshold next lower value that will trigger an event informing other counters
  * @param parentId parent ID of the counter, if null then the counter is a parent
  */
 @Entity
@@ -20,6 +21,7 @@ data class Counter (
     @ColumnInfo(defaultValue = "0")
     val value: Long = 0,
     val step: Long = 1,
-    val threshold: Long = 1,
+    val upperThreshold: Long = 1,
+    val lowerThreshold: Long = -1,
     val parentId: Long? = null
 )
