@@ -16,6 +16,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
+                    threshold = counter.threshold,
                     parentId = counter.parentId
                 )
             }
@@ -30,6 +31,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
+                    threshold = counter.threshold,
                     parentId = counter.parentId
                 )
             }
@@ -43,6 +45,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             name = counter.name,
             value = counter.value,
             step = counter.step,
+            threshold = counter.threshold,
             parentId = counter.parentId
         )
     }
@@ -53,6 +56,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
+                threshold = counterRepo.threshold,
                 parentId = counterRepo.parentId)
         )
     }
@@ -64,6 +68,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
+                threshold = counterRepo.threshold,
                 parentId = counterRepo.parentId)
         )
     }

@@ -5,5 +5,6 @@ data class CounterRepo(
     val name: String,
     val value: Long,
     val step: Long,
+    val threshold: Long,
     val parentId: Long?
 )
