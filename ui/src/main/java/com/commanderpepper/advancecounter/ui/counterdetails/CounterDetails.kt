@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.commanderpepper.advancecounter.ui.AddCounterDialog
-import com.commanderpepper.advancecounter.ui.AddCounterState
+import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterDialog
+import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterState
 import com.commanderpepper.advancecounter.ui.items.CounterItem
 import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import kotlinx.coroutines.flow.StateFlow

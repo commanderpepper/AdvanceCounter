@@ -1,4 +1,4 @@
-package com.commanderpepper.advancecounter.ui
+package com.commanderpepper.advancecounter.ui.addcounterdialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
