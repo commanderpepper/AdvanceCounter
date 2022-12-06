@@ -53,6 +53,8 @@ class CounterDetailsViewModel @Inject constructor (
                     name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
                     step = addCounterState.step,
+                    upperThreshold = addCounterState.value + addCounterState.step,
+                    lowerThreshold = addCounterState.value - addCounterState.step,
                     parentId = savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )

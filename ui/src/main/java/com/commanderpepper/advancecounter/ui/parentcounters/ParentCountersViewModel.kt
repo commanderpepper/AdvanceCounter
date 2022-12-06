@@ -49,6 +49,8 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
                     name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
                     step = addCounterState.step,
+                    upperThreshold = addCounterState.value + addCounterState.step,
+                    lowerThreshold = addCounterState.value - addCounterState.step,
                     parentId = null
                 )
             )

@@ -5,6 +5,7 @@ buildscript {
         coroutine_version = '1.6.4'
         turbine_version = '0.9.0'
         mockito_version = '4.0.0'
+        room_version = '2.4.3'
     }
 
     dependencies {
