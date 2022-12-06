@@ -39,9 +39,15 @@ class AdvanceCounterActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        composable("counters/?counterId={counterId}"){ entry ->
-                            val url = entry.arguments?.getString("counterId")
-                            CounterDetails()
+                        composable("counters/?counterId={counterId}"){
+                            CounterDetails() { id ->
+                                navController.navigate(
+                                    "counters/?counterId={counterId}".replace(
+                                        oldValue = "{counterId}",
+                                        newValue = id.toString()
+                                    )
+                                )
+                            }
                         }
                     }
                 }

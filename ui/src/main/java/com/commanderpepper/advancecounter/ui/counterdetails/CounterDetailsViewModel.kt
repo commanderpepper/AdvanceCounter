@@ -50,7 +50,7 @@ class CounterDetailsViewModel @Inject constructor (
             counterRepository.insertCounter(
                 CounterRepo(
                     id = 0L,
-                    name = addCounterState.name,
+                    name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
                     parentId = savedStateHandle.get<String>("counterId")!!.toLong()
                 )

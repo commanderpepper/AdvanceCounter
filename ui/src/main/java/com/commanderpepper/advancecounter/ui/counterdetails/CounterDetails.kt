@@ -22,18 +22,20 @@ import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun CounterDetails(modifier: Modifier = Modifier, counterDetailsViewModel: CounterDetailsViewModel = hiltViewModel()) {
+fun CounterDetails(modifier: Modifier = Modifier, counterDetailsViewModel: CounterDetailsViewModel = hiltViewModel(), counterOnClick: (Long) -> Unit) {
     CounterDetails(modifier = modifier,
         parentCounterItemUI = counterDetailsViewModel.parentCounter,
         childCounters = counterDetailsViewModel.childCounters,
-        addCounterOnClick = counterDetailsViewModel::addCounter)
+        addCounterOnClick = counterDetailsViewModel::addCounter,
+        counterOnClick = counterOnClick)
 }
 
 @Composable
 fun CounterDetails(modifier: Modifier = Modifier,
                    parentCounterItemUI: StateFlow<CounterItemUIState>,
                    childCounters: StateFlow<List<CounterItemUIState>>,
-                   addCounterOnClick: (AddCounterState) -> Unit
+                   addCounterOnClick: (AddCounterState) -> Unit,
+                   counterOnClick: (Long) -> Unit
 ){
     val parentCounterItemUIState = parentCounterItemUI.collectAsState()
     val childCountersState = childCounters.collectAsState()
@@ -47,7 +49,9 @@ fun CounterDetails(modifier: Modifier = Modifier,
                         counterItemUIState = item,
                         onMinusClicked = {},
                         onPlusClicked = {},
-                        counterClicked = {}
+                        counterClicked = {
+                            counterOnClick(it)
+                        }
                     )
                 })
             }

@@ -46,7 +46,7 @@ class ParentCountersViewModel @Inject constructor(private val counterRepository:
             counterRepository.insertCounter(
                 CounterRepo(
                     id = 0L,
-                    name = addCounterState.name,
+                    name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
                     parentId = null
                 )
