@@ -86,7 +86,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             var currentThreshold = current.upperThreshold
 
             while(currentThreshold < nextValue){
-                currentThreshold += currentThreshold
+                currentThreshold += current.upperThreshold
             }
 
             updateCounter(current.copy(value = nextValue, upperThreshold = currentThreshold))
@@ -104,7 +104,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             var currentThreshold = current.lowerThreshold
 
             while(currentThreshold > nextValue){
-                currentThreshold += currentThreshold
+                currentThreshold += current.lowerThreshold
             }
 
             updateCounter(current.copy(value = nextValue, lowerThreshold = currentThreshold))
