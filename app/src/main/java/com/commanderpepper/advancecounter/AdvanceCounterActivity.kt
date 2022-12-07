@@ -30,7 +30,10 @@ class AdvanceCounterActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "counter/parents"){
                         composable("counter/parents"){
-                            ParentCounters(){ id ->
+                            ParentCounters(
+                                addCounterImageResource = R.drawable.ic_add,
+                                topAppBarTitle = "Parent Counters"
+                            ){ id ->
                                 navController.navigate(
                                     "counters/?counterId={counterId}".replace(
                                         oldValue = "{counterId}",
