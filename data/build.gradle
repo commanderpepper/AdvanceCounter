@@ -64,4 +64,6 @@ dependencies {
     androidTestImplementation "app.cash.turbine:turbine:$turbine_version"
 
     implementation project(path: ':database')
+    implementation project(path: ':usecase')
+
 }

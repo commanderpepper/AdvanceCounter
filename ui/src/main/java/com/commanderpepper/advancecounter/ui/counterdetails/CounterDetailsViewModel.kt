@@ -7,30 +7,31 @@ import com.commanderpepper.advancecounter.data.model.CounterRepo
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterState
 import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
+import com.commanderpepper.advancecounter.usecase.ConvertAddCounterStateToCounterRepoUseCase
+import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterItemUIStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CounterDetailsViewModel @Inject constructor (
+class CounterDetailsViewModel @Inject constructor(
     private val counterRepository: CounterRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val convertCounterRepoToCounterItemUIState: ConvertCounterRepoToCounterItemUIStateUseCase,
+    private val convertAddCounterStateToCounterRepoUseCase: ConvertAddCounterStateToCounterRepoUseCase
 ) : ViewModel() {
 
-    val childCounters = counterRepository.getChildCounters(savedStateHandle.get<String>("counterId")!!.toLong()).map { list ->
-        list.map { counterRepo ->
-            CounterItemUIState(
-                id = counterRepo.id,
-                name = counterRepo.name,
-                value = counterRepo.value.toString(),
-                lowerThreshold = counterRepo.lowerThreshold.toString(),
-                upperThreshold = counterRepo.upperThreshold.toString()
-            )
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+    val childCounters =
+        counterRepository.getChildCounters(savedStateHandle.get<String>("counterId")!!.toLong())
+            .map { list ->
+                list.map { counterRepo ->
+                    convertCounterRepoToCounterItemUIState(counterRepo)
+                }
+            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
-    private val _parentCounter = MutableStateFlow<CounterItemUIState>(CounterItemUIState(1, "", "", "", ""))
+    private val _parentCounter =
+        MutableStateFlow<CounterItemUIState>(CounterItemUIState(1, "", "", "", ""))
     val parentCounter: StateFlow<CounterItemUIState> = _parentCounter
 
     init {
@@ -38,29 +39,17 @@ class CounterDetailsViewModel @Inject constructor (
             val parentCounter =
                 counterRepository.getCounter(savedStateHandle.get<String>("counterId")!!.toLong())
             _parentCounter.emit(
-                CounterItemUIState(
-                    id = parentCounter.id,
-                    name = parentCounter.name,
-                    value = parentCounter.value.toString(),
-                    lowerThreshold = parentCounter.lowerThreshold.toString(),
-                    upperThreshold = parentCounter.upperThreshold.toString()
-                )
+                convertCounterRepoToCounterItemUIState(parentCounter)
             )
         }
     }
 
-    fun addCounter(addCounterState: AddCounterState){
+    fun addCounter(addCounterState: AddCounterState) {
         viewModelScope.launch {
             counterRepository.insertCounter(
-                CounterRepo(
-                    id = 0L,
-                    name = addCounterState.name.ifEmpty { "Counter" },
-                    value = addCounterState.value,
-                    step = addCounterState.step,
-                    threshold = addCounterState.threshold,
-                    upperThreshold = addCounterState.value + addCounterState.threshold,
-                    lowerThreshold = addCounterState.value - addCounterState.threshold,
-                    parentId = savedStateHandle.get<String>("counterId")!!.toLong()
+                convertAddCounterStateToCounterRepoUseCase(
+                    addCounterState,
+                    savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )
         }

@@ -5,23 +5,21 @@ import com.commanderpepper.advancecounter.database.model.Counter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.commanderpepper.advancecounter.database.room.CounterDAO
+import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterUseCase
+import com.commanderpepper.advancecounter.usecase.ConvertCounterToCounterRepoUseCase
 import javax.inject.Inject
 import kotlin.math.abs
 
-class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterDAO): CounterRepository {
+class CounterRepositoryImpl @Inject constructor(
+    private val counterDAO: CounterDAO,
+    private val convertCounterToCounterRepoUseCase: ConvertCounterToCounterRepoUseCase,
+    private val convertCounterRepoToCounterUseCase: ConvertCounterRepoToCounterUseCase
+    ): CounterRepository {
+
     override fun getParentCounters(): Flow<List<CounterRepo>> {
         return counterDAO.getParentCounters().map {
             it.map { counter ->
-                CounterRepo(
-                    id = counter.id,
-                    name = counter.name,
-                    value = counter.value,
-                    step = counter.step,
-                    threshold = counter.threshold,
-                    upperThreshold = counter.upperThreshold,
-                    lowerThreshold = counter.lowerThreshold,
-                    parentId = counter.parentId
-                )
+                convertCounterToCounterRepoUseCase(counter)
             }
         }
     }
@@ -29,59 +27,22 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
     override fun getChildCounters(parentId: Long): Flow<List<CounterRepo>> {
         return counterDAO.getChildCounters(parentId).map {
             it.map { counter ->
-                CounterRepo (
-                    id = counter.id,
-                    name = counter.name,
-                    value = counter.value,
-                    step = counter.step,
-                    threshold = counter.threshold,
-                    upperThreshold = counter.upperThreshold,
-                    lowerThreshold = counter.lowerThreshold,
-                    parentId = counter.parentId
-                )
+                convertCounterToCounterRepoUseCase(counter)
             }
         }
     }
 
     override suspend fun getCounter(counterId: Long): CounterRepo {
         val counter = counterDAO.getCounter(counterId)!!
-        return CounterRepo(
-            id = counter.id,
-            name = counter.name,
-            value = counter.value,
-            step = counter.step,
-            threshold = counter.threshold,
-            upperThreshold = counter.upperThreshold,
-            lowerThreshold = counter.lowerThreshold,
-            parentId = counter.parentId
-        )
+        return convertCounterToCounterRepoUseCase(counter)
     }
 
     override suspend fun insertCounter(counterRepo: CounterRepo) {
-        counterDAO.insertCounter(
-            Counter(
-                name = counterRepo.name,
-                value = counterRepo.value,
-                step = counterRepo.step,
-                threshold = counterRepo.threshold,
-                upperThreshold = counterRepo.upperThreshold,
-                lowerThreshold = counterRepo.lowerThreshold,
-                parentId = counterRepo.parentId)
-        )
+        counterDAO.insertCounter(convertCounterRepoToCounterUseCase(counterRepo))
     }
 
     override suspend fun updateCounter(counterRepo: CounterRepo) {
-        counterDAO.updateCounter(
-            Counter(
-                id = counterRepo.id,
-                name = counterRepo.name,
-                value = counterRepo.value,
-                step = counterRepo.step,
-                threshold = counterRepo.threshold,
-                upperThreshold = counterRepo.upperThreshold,
-                lowerThreshold = counterRepo.lowerThreshold,
-                parentId = counterRepo.parentId)
-        )
+        counterDAO.updateCounter(convertCounterRepoToCounterUseCase(counterRepo))
     }
 
     override suspend fun incrementCounter(counterId: Long) {
