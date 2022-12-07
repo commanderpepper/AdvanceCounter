@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.dp
 data class CounterItemUIState(
     val id: Long,
     val name: String,
-    val value: String
+    val value: String,
+    val lowerThreshold: String,
+    val upperThreshold: String
 )
 
 @Composable
@@ -38,6 +40,18 @@ fun CounterItem(
                     text = "Value: ${counterItemUIState.value}",
                     style = MaterialTheme.typography.labelLarge
                 )
+                Row() {
+                    Text(
+                        modifier = Modifier.padding(4.dp),
+                        text = "Lower Threshold: ${counterItemUIState.lowerThreshold}",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Text(
+                        modifier = Modifier.padding(4.dp),
+                        text = "Upper Threshold: ${counterItemUIState.upperThreshold}",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
             }
             Row(
                 modifier = Modifier.padding(4.dp),
@@ -63,7 +77,7 @@ fun CounterItem(
 @Composable
 fun CounterItemPreview() {
     CounterItem(
-        counterItemUIState = CounterItemUIState(1L, "Test", "10"),
+        counterItemUIState = CounterItemUIState(1L, "Test", "10", "-7", "7"),
         counterClicked = {},
         onMinusClicked = {},
         onPlusClicked = {})

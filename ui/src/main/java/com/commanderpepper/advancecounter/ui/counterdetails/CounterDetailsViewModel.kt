@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.commanderpepper.advancecounter.data.model.CounterRepo
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
-import com.commanderpepper.advancecounter.ui.AddCounterState
+import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterState
 import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -23,12 +23,14 @@ class CounterDetailsViewModel @Inject constructor (
             CounterItemUIState(
                 id = counterRepo.id,
                 name = counterRepo.name,
-                value = counterRepo.value.toString()
+                value = counterRepo.value.toString(),
+                lowerThreshold = counterRepo.lowerThreshold.toString(),
+                upperThreshold = counterRepo.upperThreshold.toString()
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
-    private val _parentCounter = MutableStateFlow<CounterItemUIState>(CounterItemUIState(1, "", ""))
+    private val _parentCounter = MutableStateFlow<CounterItemUIState>(CounterItemUIState(1, "", "", "", ""))
     val parentCounter: StateFlow<CounterItemUIState> = _parentCounter
 
     init {
@@ -39,7 +41,9 @@ class CounterDetailsViewModel @Inject constructor (
                 CounterItemUIState(
                     id = parentCounter.id,
                     name = parentCounter.name,
-                    value = parentCounter.value.toString()
+                    value = parentCounter.value.toString(),
+                    lowerThreshold = parentCounter.lowerThreshold.toString(),
+                    upperThreshold = parentCounter.upperThreshold.toString()
                 )
             )
         }
@@ -53,8 +57,9 @@ class CounterDetailsViewModel @Inject constructor (
                     name = addCounterState.name.ifEmpty { "Counter" },
                     value = addCounterState.value,
                     step = addCounterState.step,
-                    upperThreshold = addCounterState.value + addCounterState.step,
-                    lowerThreshold = addCounterState.value - addCounterState.step,
+                    threshold = addCounterState.threshold,
+                    upperThreshold = addCounterState.value + addCounterState.threshold,
+                    lowerThreshold = addCounterState.value - addCounterState.threshold,
                     parentId = savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )
