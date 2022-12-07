@@ -39,10 +39,6 @@ fun AddCounterDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Add a name for the new counter",
-                    style = MaterialTheme.typography.labelLarge
-                )
                 TextField(
                     value = counterName.value,
                     label = {
