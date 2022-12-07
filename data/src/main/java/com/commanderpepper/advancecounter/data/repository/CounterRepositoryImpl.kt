@@ -17,6 +17,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
+                    threshold = counter.threshold,
                     upperThreshold = counter.upperThreshold,
                     lowerThreshold = counter.lowerThreshold,
                     parentId = counter.parentId
@@ -33,6 +34,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                     name = counter.name,
                     value = counter.value,
                     step = counter.step,
+                    threshold = counter.threshold,
                     upperThreshold = counter.upperThreshold,
                     lowerThreshold = counter.lowerThreshold,
                     parentId = counter.parentId
@@ -48,6 +50,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
             name = counter.name,
             value = counter.value,
             step = counter.step,
+            threshold = counter.threshold,
             upperThreshold = counter.upperThreshold,
             lowerThreshold = counter.lowerThreshold,
             parentId = counter.parentId
@@ -60,6 +63,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
+                threshold = counterRepo.threshold,
                 upperThreshold = counterRepo.upperThreshold,
                 lowerThreshold = counterRepo.lowerThreshold,
                 parentId = counterRepo.parentId)
@@ -73,6 +77,7 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
                 name = counterRepo.name,
                 value = counterRepo.value,
                 step = counterRepo.step,
+                threshold = counterRepo.threshold,
                 upperThreshold = counterRepo.upperThreshold,
                 lowerThreshold = counterRepo.lowerThreshold,
                 parentId = counterRepo.parentId)
@@ -84,16 +89,15 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         val nextValue = current.value + current.step
         // Inform others counters if true
         if(nextValue >= current.upperThreshold){
-            var currentThreshold = current.upperThreshold
+            var currentUpperThreshold = current.upperThreshold
+            var currentLowerThreshold = current.lowerThreshold
 
-            while(currentThreshold <= nextValue){
-                currentThreshold += current.upperThreshold
+            while(currentUpperThreshold <= nextValue){
+                currentUpperThreshold += current.threshold
+                currentLowerThreshold += current.threshold
             }
 
-            val difference = currentThreshold - nextValue
-            val lowerThreshold = nextValue - difference
-
-            updateCounter(current.copy(value = nextValue, upperThreshold = currentThreshold, lowerThreshold = lowerThreshold))
+            updateCounter(current.copy(value = nextValue, upperThreshold = currentUpperThreshold, lowerThreshold = currentLowerThreshold))
         }
         else {
             updateCounter(current.copy(value = nextValue))
@@ -105,16 +109,15 @@ class CounterRepositoryImpl @Inject constructor(private val counterDAO: CounterD
         val nextValue = current.value - current.step
         // Inform others counters if true
         if(nextValue <= current.lowerThreshold){
-            var currentThreshold = current.lowerThreshold
+            var currentUpperThreshold = current.upperThreshold
+            var currentLowerThreshold = current.lowerThreshold
 
-            while(currentThreshold >= nextValue){
-                currentThreshold += current.lowerThreshold
+            while(currentLowerThreshold >= nextValue){
+                currentUpperThreshold -= current.threshold
+                currentLowerThreshold -= current.threshold
             }
 
-            val difference = abs(currentThreshold - nextValue)
-            val upperThreshold = nextValue + difference
-
-            updateCounter(current.copy(value = nextValue, lowerThreshold = currentThreshold, upperThreshold = upperThreshold))
+            updateCounter(current.copy(value = nextValue, lowerThreshold = currentLowerThreshold, upperThreshold = currentUpperThreshold))
         }
         else {
             updateCounter(current.copy(value = nextValue))

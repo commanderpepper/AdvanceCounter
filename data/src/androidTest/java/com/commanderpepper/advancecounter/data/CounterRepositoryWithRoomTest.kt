@@ -51,6 +51,7 @@ class CounterRepositoryWithRoomTest {
                 value = 1L,
                 parentId = null,
                 step = 1,
+                threshold = 10L,
                 upperThreshold = 10L,
                 lowerThreshold = -10L
             )
@@ -68,6 +69,7 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 1,
+                threshold = 10L,
                 upperThreshold = 10L,
                 lowerThreshold = -10L
             )
@@ -88,13 +90,14 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 5,
+                threshold = 2L,
                 upperThreshold = 2L,
                 lowerThreshold = -2L
             )
         )
         counterRepository.incrementCounter(1L)
         Assert.assertEquals(6L, counterRepository.getCounter(1L).upperThreshold)
-        Assert.assertEquals(4L, counterRepository.getCounter(1L).lowerThreshold)
+        Assert.assertEquals(2L, counterRepository.getCounter(1L).lowerThreshold)
     }
 
     @Test
@@ -106,13 +109,14 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 5,
+                threshold = 2L,
                 upperThreshold = 2L,
                 lowerThreshold = -2L
             )
         )
         counterRepository.decrementCounter(1L)
         Assert.assertEquals(-6L, counterRepository.getCounter(1L).lowerThreshold)
-        Assert.assertEquals(-4L, counterRepository.getCounter(1L).upperThreshold)
+        Assert.assertEquals(-2L, counterRepository.getCounter(1L).upperThreshold)
     }
 
     @Test
@@ -124,6 +128,7 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 1,
+                threshold = 2L,
                 upperThreshold = 2L,
                 lowerThreshold = -2L
             )
@@ -142,6 +147,7 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 1,
+                threshold = 2L,
                 upperThreshold = 2L,
                 lowerThreshold = -2L
             )
@@ -160,6 +166,7 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 1,
+                threshold = 5L,
                 upperThreshold = 5L,
                 lowerThreshold = -5L
             )
@@ -180,6 +187,7 @@ class CounterRepositoryWithRoomTest {
                 value = 0L,
                 parentId = null,
                 step = 1,
+                threshold = 5L,
                 upperThreshold = 5L,
                 lowerThreshold = -5L
             )
