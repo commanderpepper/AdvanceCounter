@@ -2,10 +2,8 @@ package com.commanderpepper.advancecounter.ui.parentcounters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.commanderpepper.advancecounter.data.model.CounterRepo
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
-import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterState
-import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.AddCounterState
 import com.commanderpepper.advancecounter.usecase.ConvertAddCounterStateToCounterRepoUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterItemUIStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.commanderpepper.advancecounter.database.model
+package com.commanderpepper.advancecounter.model.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

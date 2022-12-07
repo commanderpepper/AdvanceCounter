@@ -1,6 +1,6 @@
-package com.commanderpepper.advancecounter.data.model
+package com.commanderpepper.advancecounter.model.repo
 
-data class CounterRepo(
+data class CounterRepo (
     val id: Long,
     val name: String,
     val value: Long,

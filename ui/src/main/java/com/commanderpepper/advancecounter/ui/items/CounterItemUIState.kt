@@ -10,14 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-data class CounterItemUIState(
-    val id: Long,
-    val name: String,
-    val value: String,
-    val lowerThreshold: String,
-    val upperThreshold: String
-)
+import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
 
 @Composable
 fun CounterItem(

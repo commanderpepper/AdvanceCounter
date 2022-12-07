@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.commanderpepper.advancecounter.model.ui.AddCounterState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,5 +111,3 @@ fun AddCounterDialog(
         onDismissRequest = onDismissRequest
     )
 }
-
-data class AddCounterState(val name: String, val value: Long, val step: Long = 1, val threshold: Long)

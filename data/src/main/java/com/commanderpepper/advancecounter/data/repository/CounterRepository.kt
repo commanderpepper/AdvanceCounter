@@ -1,6 +1,6 @@
 package com.commanderpepper.advancecounter.data.repository
 
-import com.commanderpepper.advancecounter.data.model.CounterRepo
+import com.commanderpepper.advancecounter.model.repo.CounterRepo
 import kotlinx.coroutines.flow.Flow
 
 interface CounterRepository {

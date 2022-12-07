@@ -1,7 +1,7 @@
 package com.commanderpepper.advancecounter.usecase
 
-import com.commanderpepper.advancecounter.data.model.CounterRepo
-import com.commanderpepper.advancecounter.ui.items.CounterItemUIState
+import com.commanderpepper.advancecounter.model.repo.CounterRepo
+import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
 import javax.inject.Inject
 
 class ConvertCounterRepoToCounterItemUIStateUseCase @Inject constructor() {

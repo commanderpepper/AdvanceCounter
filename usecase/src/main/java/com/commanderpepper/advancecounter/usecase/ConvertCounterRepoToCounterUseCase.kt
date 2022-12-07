@@ -1,7 +1,7 @@
 package com.commanderpepper.advancecounter.usecase
 
-import com.commanderpepper.advancecounter.data.model.CounterRepo
-import com.commanderpepper.advancecounter.database.model.Counter
+import com.commanderpepper.advancecounter.model.database.Counter
+import com.commanderpepper.advancecounter.model.repo.CounterRepo
 import javax.inject.Inject
 
 class ConvertCounterRepoToCounterUseCase @Inject constructor() {

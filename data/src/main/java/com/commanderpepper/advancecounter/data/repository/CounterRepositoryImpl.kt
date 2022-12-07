@@ -1,14 +1,12 @@
 package com.commanderpepper.advancecounter.data.repository
 
-import com.commanderpepper.advancecounter.data.model.CounterRepo
-import com.commanderpepper.advancecounter.database.model.Counter
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import com.commanderpepper.advancecounter.database.room.CounterDAO
+import com.commanderpepper.advancecounter.model.repo.CounterRepo
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterToCounterRepoUseCase
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import kotlin.math.abs
 
 class CounterRepositoryImpl @Inject constructor(
     private val counterDAO: CounterDAO,
