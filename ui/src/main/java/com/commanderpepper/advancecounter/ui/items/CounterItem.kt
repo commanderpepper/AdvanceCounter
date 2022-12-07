@@ -53,12 +53,12 @@ fun CounterItem(
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = { onMinusClicked(counterItemUIState.id) }) {
-                    Text(text = "-")
+                    Text(text = "- ${counterItemUIState.step}")
                 }
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = { onPlusClicked(counterItemUIState.id) }) {
-                    Text(text = "+")
+                    Text(text = "+ ${counterItemUIState.step}")
                 }
             }
         }
@@ -70,7 +70,7 @@ fun CounterItem(
 @Composable
 fun CounterItemPreview() {
     CounterItem(
-        counterItemUIState = CounterItemUIState(1L, "Test", "10", "-7", "7"),
+        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1","-7", "7"),
         counterClicked = {},
         onMinusClicked = {},
         onPlusClicked = {})

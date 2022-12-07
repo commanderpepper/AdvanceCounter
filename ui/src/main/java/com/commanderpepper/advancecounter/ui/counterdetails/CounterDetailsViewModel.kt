@@ -30,7 +30,14 @@ class CounterDetailsViewModel @Inject constructor(
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     private val _parentCounter =
-        MutableStateFlow<CounterItemUIState>(CounterItemUIState(1, "", "", "", ""))
+        MutableStateFlow<CounterItemUIState>(CounterItemUIState(
+            id = 1,
+            name = "",
+            value = "",
+            step = "",
+            lowerThreshold = "",
+            upperThreshold = ""
+        ))
     val parentCounter: StateFlow<CounterItemUIState> = _parentCounter
 
     init {
