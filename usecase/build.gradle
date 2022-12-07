@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation project (path: ':data')
+    implementation project (path: ':database')
+    implementation project (path: ':ui')
 
     // Kotlin
     implementation "androidx.core:core-ktx:$kotlin_version"
