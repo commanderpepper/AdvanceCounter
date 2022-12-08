@@ -2,7 +2,9 @@ package com.commanderpepper.advancecounter.ui.addcounterdialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +40,7 @@ fun AddCounterDialog(
             Text(text = "Add a counter")
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 TextField(
                     value = counterName.value,
                     label = {
@@ -50,7 +52,7 @@ fun AddCounterDialog(
                 TextField(
                     value = counterValue.value,
                     label = {
-                        Text(text = "Value", style = MaterialTheme.typography.labelSmall)
+                        Text(text = "Starting Value", style = MaterialTheme.typography.labelSmall)
                     },
                     placeholder = {
                         Text(text = "0", style = MaterialTheme.typography.bodyMedium)
