@@ -41,38 +41,38 @@ fun CounterDetails(modifier: Modifier = Modifier,
 ){
     val parentCounterItemUIState = parentCounterItemUI.collectAsState()
     val childCountersState = childCounters.collectAsState()
-        Column() {
-            val openDialog = remember { mutableStateOf(false) }
-            TopAppBar(
-                title = {
-                    Text(text = parentCounterItemUIState.value.name, maxLines = 1)
-                },
-                actions = {
-                    IconButton(onClick = { openDialog.value = true }) {
-                        val painter = painterResource(id = addCounterImageResource)
-                        Icon(painter = painter, contentDescription = "Add new counter")
+    Column() {
+        val openDialog = remember { mutableStateOf(false) }
+        TopAppBar(
+            title = {
+                Text(text = parentCounterItemUIState.value.name, maxLines = 1)
+            },
+            actions = {
+                IconButton(onClick = { openDialog.value = true }) {
+                    val painter = painterResource(id = addCounterImageResource)
+                    Icon(painter = painter, contentDescription = "Add new counter")
+                }
+            })
+        CounterItem(counterItemUIState = parentCounterItemUIState.value, onMinusClicked = {}, onPlusClicked = {}, counterClicked = {})
+        LazyColumn(modifier = modifier) {
+            items(items = childCountersState.value, itemContent = { item ->
+                CounterItem(
+                    counterItemUIState = item,
+                    onMinusClicked = {},
+                    onPlusClicked = {},
+                    counterClicked = {
+                        counterOnClick(it)
                     }
-                })
-            CounterItem(counterItemUIState = parentCounterItemUIState.value, onMinusClicked = {}, onPlusClicked = {}, counterClicked = {})
-            LazyColumn(modifier = modifier) {
-                items(items = childCountersState.value, itemContent = { item ->
-                    CounterItem(
-                        counterItemUIState = item,
-                        onMinusClicked = {},
-                        onPlusClicked = {},
-                        counterClicked = {
-                            counterOnClick(it)
-                        }
-                    )
-                })
-            }
-            if (openDialog.value) {
-                AddCounterDialog(
-                    onDismissRequest = { openDialog.value = false },
-                    onConfirmClick = {
-                        addCounterOnClick(it)
-                        openDialog.value = false
-                    })
-            }
+                )
+            })
         }
+        if (openDialog.value) {
+            AddCounterDialog(
+                onDismissRequest = { openDialog.value = false },
+                onConfirmClick = {
+                    addCounterOnClick(it)
+                    openDialog.value = false
+                })
+        }
+    }
 }
