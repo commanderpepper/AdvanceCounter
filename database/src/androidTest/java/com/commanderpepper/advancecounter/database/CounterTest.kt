@@ -11,7 +11,7 @@ import java.io.IOException
 import android.content.Context
 import androidx.room.Room
 import app.cash.turbine.test
-import com.commanderpepper.advancecounter.database.model.Counter
+import com.commanderpepper.advancecounter.model.database.Counter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
