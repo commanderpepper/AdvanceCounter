@@ -1,5 +1,6 @@
 package com.commanderpepper.advancecounter.ui.addcounterdialog
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
@@ -33,6 +35,8 @@ fun AddCounterDialog(
     val counterThreshold = remember {
         mutableStateOf("")
     }
+
+    val context = LocalContext.current
 
     AlertDialog(
         modifier = modifier,
@@ -94,14 +98,24 @@ fun AddCounterDialog(
         },
         confirmButton = {
             Button(onClick = {
-                onConfirmClick(
-                    AddCounterState(
-                        name = counterName.value,
-                        value = if(counterValue.value.isEmpty()) 0 else counterValue.value.toLong(),
-                        step =  if(counterStep.value.isEmpty()) 1 else counterStep.value.toLong(),
-                        threshold = if(counterThreshold.value.isEmpty()) 1 else counterThreshold.value.toLong()
-                    )
-                )
+                when {
+                    counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
+                        Toast.makeText(context, "Step cannot be less than zero", Toast.LENGTH_SHORT).show()
+                    }
+                    counterThreshold.value.isBlank() || counterThreshold.value.toLong() <= 0 -> {
+                        Toast.makeText(context, "Threshold cannot be less than zero", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        onConfirmClick(
+                            AddCounterState(
+                                name = counterName.value,
+                                value = if(counterValue.value.isEmpty()) 0 else counterValue.value.toLong(),
+                                step =  counterStep.value.toLong(),
+                                threshold = counterThreshold.value.toLong()
+                            )
+                        )
+                    }
+                }
             }) {
                 Text(text = "Yeah, thanks")
             }
