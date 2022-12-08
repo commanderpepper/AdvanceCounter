@@ -29,34 +29,21 @@ class CounterDetailsViewModel @Inject constructor(
                 }
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
-    private val _parentCounter =
-        MutableStateFlow<CounterItemUIState>(CounterItemUIState(
-            id = 1,
-            name = "",
-            value = "",
-            step = "",
-            lowerThreshold = "",
-            upperThreshold = ""
-        ))
-    val parentCounter: StateFlow<CounterItemUIState> = _parentCounter
 
-    init {
-        viewModelScope.launch {
-            val parentCounter =
-                counterRepository.getCounter(savedStateHandle.get<String>("counterId")!!.toLong())
-            _parentCounter.emit(
-                convertCounterRepoToCounterItemUIState(parentCounter)
+    val parentCounter: StateFlow<CounterItemUIState> = counterRepository.getCounterFlow(savedStateHandle.get<String>("counterId")!!.toLong()).map { convertCounterRepoToCounterItemUIState(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L),
+            CounterItemUIState(
+                id = 0, "", "", "", "", ""
             )
-        }
-    }
+    )
 
-    fun plusButtonOnClick(counterId: Long){
+    fun plusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
             counterRepository.incrementCounter(counterId)
         }
     }
 
-    fun minusButtonOnClick(counterId: Long){
+    fun minusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
             counterRepository.decrementCounter(counterId)
         }

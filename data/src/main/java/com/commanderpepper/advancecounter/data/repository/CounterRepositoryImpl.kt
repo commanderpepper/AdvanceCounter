@@ -30,6 +30,12 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getCounterFlow(counterId: Long): Flow<CounterRepo> {
+        return counterDAO.getCounterFlow(counterId).map {
+            convertCounterToCounterRepoUseCase(it)
+        }
+    }
+
     override suspend fun getCounter(counterId: Long): CounterRepo {
         val counter = counterDAO.getCounter(counterId)!!
         return convertCounterToCounterRepoUseCase(counter)
