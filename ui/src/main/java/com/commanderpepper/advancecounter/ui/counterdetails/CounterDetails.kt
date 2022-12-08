@@ -18,27 +18,36 @@ import com.commanderpepper.advancecounter.ui.items.CounterItem
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun CounterDetails(modifier: Modifier = Modifier,
-                   addCounterImageResource: Int,
-                   counterDetailsViewModel: CounterDetailsViewModel = hiltViewModel(),
-                   counterOnClick: (Long) -> Unit) {
-    CounterDetails(modifier = modifier,
+fun CounterDetails(
+    modifier: Modifier = Modifier,
+    addCounterImageResource: Int,
+    counterDetailsViewModel: CounterDetailsViewModel = hiltViewModel(),
+    counterOnClick: (Long) -> Unit
+) {
+    CounterDetails(
+        modifier = modifier,
         parentCounterItemUI = counterDetailsViewModel.parentCounter,
         addCounterImageResource = addCounterImageResource,
         childCounters = counterDetailsViewModel.childCounters,
         addCounterOnClick = counterDetailsViewModel::addCounter,
-        counterOnClick = counterOnClick)
+        counterOnClick = counterOnClick,
+        onPlusClicked = counterDetailsViewModel::plusButtonOnClick,
+        onMinusClicked = counterDetailsViewModel::minusButtonOnClick
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CounterDetails(modifier: Modifier = Modifier,
-                   addCounterImageResource: Int,
-                   parentCounterItemUI: StateFlow<CounterItemUIState>,
-                   childCounters: StateFlow<List<CounterItemUIState>>,
-                   addCounterOnClick: (AddCounterState) -> Unit,
-                   counterOnClick: (Long) -> Unit
-){
+fun CounterDetails(
+    modifier: Modifier = Modifier,
+    addCounterImageResource: Int,
+    parentCounterItemUI: StateFlow<CounterItemUIState>,
+    childCounters: StateFlow<List<CounterItemUIState>>,
+    addCounterOnClick: (AddCounterState) -> Unit,
+    counterOnClick: (Long) -> Unit,
+    onPlusClicked: (Long) -> Unit,
+    onMinusClicked: (Long) -> Unit
+) {
     val parentCounterItemUIState = parentCounterItemUI.collectAsState()
     val childCountersState = childCounters.collectAsState()
     Column() {
@@ -53,13 +62,26 @@ fun CounterDetails(modifier: Modifier = Modifier,
                     Icon(painter = painter, contentDescription = "Add new counter")
                 }
             })
-        CounterItem(counterItemUIState = parentCounterItemUIState.value, onMinusClicked = {}, onPlusClicked = {}, counterClicked = {})
+        CounterItem(
+            counterItemUIState = parentCounterItemUIState.value,
+            onMinusClicked = {
+                onMinusClicked(it)
+            },
+            onPlusClicked = {
+                onPlusClicked(it)
+            },
+            counterClicked = {}
+        )
         LazyColumn(modifier = modifier) {
             items(items = childCountersState.value, itemContent = { item ->
                 CounterItem(
                     counterItemUIState = item,
-                    onMinusClicked = {},
-                    onPlusClicked = {},
+                    onMinusClicked = {
+                        onMinusClicked(it)
+                    },
+                    onPlusClicked = {
+                        onPlusClicked(it)
+                    },
                     counterClicked = {
                         counterOnClick(it)
                     }
