@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun CounterDetails(
     modifier: Modifier = Modifier,
     addCounterImageResource: Int,
+    counterOptionImageResource: Int,
     counterDetailsViewModel: CounterDetailsViewModel = hiltViewModel(),
     counterOnClick: (Long) -> Unit
 ) {
@@ -32,7 +33,10 @@ fun CounterDetails(
         addCounterOnClick = counterDetailsViewModel::addCounter,
         counterOnClick = counterOnClick,
         onPlusClicked = counterDetailsViewModel::plusButtonOnClick,
-        onMinusClicked = counterDetailsViewModel::minusButtonOnClick
+        onMinusClicked = counterDetailsViewModel::minusButtonOnClick,
+        optionsImageResource = counterOptionImageResource,
+        onEditClicked = {},
+        onDeleteClicked = {}
     )
 }
 
@@ -43,10 +47,13 @@ fun CounterDetails(
     addCounterImageResource: Int,
     parentCounterItemUI: StateFlow<CounterItemUIState>,
     childCounters: StateFlow<List<CounterItemUIState>>,
+    optionsImageResource: Int,
     addCounterOnClick: (AddCounterState) -> Unit,
     counterOnClick: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
-    onMinusClicked: (Long) -> Unit
+    onMinusClicked: (Long) -> Unit,
+    onDeleteClicked: (Long) -> Unit,
+    onEditClicked: (Long) -> Unit
 ) {
     val parentCounterItemUIState = parentCounterItemUI.collectAsState()
     val childCountersState = childCounters.collectAsState()
@@ -64,27 +71,26 @@ fun CounterDetails(
             })
         CounterItem(
             counterItemUIState = parentCounterItemUIState.value,
-            onMinusClicked = {
-                onMinusClicked(it)
+            onMinusClicked = onMinusClicked
+            ,
+            onPlusClicked = onPlusClicked,
+            counterClicked = {
+
             },
-            onPlusClicked = {
-                onPlusClicked(it)
-            },
-            counterClicked = {}
+            optionsImageResource = optionsImageResource,
+            onDeleteClicked = onDeleteClicked,
+            onEditClicked = onEditClicked
         )
         LazyColumn(modifier = modifier) {
             items(items = childCountersState.value, itemContent = { item ->
                 CounterItem(
                     counterItemUIState = item,
-                    onMinusClicked = {
-                        onMinusClicked(it)
-                    },
-                    onPlusClicked = {
-                        onPlusClicked(it)
-                    },
-                    counterClicked = {
-                        counterOnClick(it)
-                    }
+                    onMinusClicked = onMinusClicked,
+                    onPlusClicked = onPlusClicked,
+                    counterClicked = counterOnClick,
+                    optionsImageResource = optionsImageResource,
+                    onDeleteClicked = onDeleteClicked,
+                    onEditClicked = onEditClicked
                 )
             })
         }

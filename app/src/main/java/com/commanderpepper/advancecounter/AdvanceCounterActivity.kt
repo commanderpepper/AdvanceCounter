@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,7 +32,8 @@ class AdvanceCounterActivity : ComponentActivity() {
                         composable("counter/parents"){
                             ParentCounters(
                                 addCounterImageResource = R.drawable.ic_add,
-                                topAppBarTitle = "Parent Counters"
+                                topAppBarTitle = "Parent Counters",
+                                counterOptionImageResource = R.drawable.ic_more_options
                             ){ id ->
                                 navController.navigate(
                                     "counters/?counterId={counterId}".replace(
@@ -44,7 +45,8 @@ class AdvanceCounterActivity : ComponentActivity() {
                         }
                         composable("counters/?counterId={counterId}"){
                             CounterDetails(
-                                addCounterImageResource = R.drawable.ic_add
+                                addCounterImageResource = R.drawable.ic_add,
+                                counterOptionImageResource = R.drawable.ic_more_options
                             ) { id ->
                                 navController.navigate(
                                     "counters/?counterId={counterId}".replace(

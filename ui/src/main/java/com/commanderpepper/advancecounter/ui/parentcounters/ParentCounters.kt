@@ -24,7 +24,8 @@ fun ParentCounters(
     parentCountersViewModel: ParentCountersViewModel = hiltViewModel(),
     addCounterImageResource: Int,
     topAppBarTitle: String,
-    counterOnClick: (Long) -> Unit
+    counterOptionImageResource: Int,
+    counterOnClick: (Long) -> Unit,
 ) {
     val openDialog = remember { mutableStateOf(false) }
     Column(modifier = Modifier.fillMaxSize()) {
@@ -43,7 +44,10 @@ fun ParentCounters(
             parentCounters = parentCountersViewModel.parentCounters,
             counterOnClick = counterOnClick,
             onPlusClicked = parentCountersViewModel::plusButtonOnClick,
-            onMinusClicked = parentCountersViewModel::minusButtonOnClick
+            onMinusClicked = parentCountersViewModel::minusButtonOnClick,
+            counterOptionImageResource = counterOptionImageResource,
+            onDeleteClicked = {},
+            onEditClicked = {}
         )
         if (openDialog.value) {
             AddCounterDialog(
@@ -62,7 +66,10 @@ fun ParentCounters(
     parentCounters: StateFlow<List<CounterItemUIState>>,
     counterOnClick: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
-    onMinusClicked: (Long) -> Unit
+    onMinusClicked: (Long) -> Unit,
+    onDeleteClicked: (Long) -> Unit,
+    onEditClicked: (Long) -> Unit,
+    counterOptionImageResource: Int
 ) {
     val parentCountersState = parentCounters.collectAsState()
     LazyColumn(modifier = modifier) {
@@ -71,7 +78,10 @@ fun ParentCounters(
                 counterItemUIState = item,
                 counterClicked = counterOnClick,
                 onMinusClicked = onMinusClicked,
-                onPlusClicked = onPlusClicked
+                onPlusClicked = onPlusClicked,
+                optionsImageResource = counterOptionImageResource,
+                onEditClicked = onEditClicked,
+                onDeleteClicked = onDeleteClicked
             )
         })
     }
