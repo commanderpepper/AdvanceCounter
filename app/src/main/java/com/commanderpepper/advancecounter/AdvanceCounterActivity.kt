@@ -43,7 +43,9 @@ class AdvanceCounterActivity : ComponentActivity() {
                             }
                         }
                         composable("counters/?counterId={counterId}"){
-                            CounterDetails() { id ->
+                            CounterDetails(
+                                addCounterImageResource = R.drawable.ic_add
+                            ) { id ->
                                 navController.navigate(
                                     "counters/?counterId={counterId}".replace(
                                         oldValue = "{counterId}",
