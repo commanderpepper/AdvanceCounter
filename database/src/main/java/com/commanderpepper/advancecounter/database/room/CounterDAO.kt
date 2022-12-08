@@ -21,6 +21,9 @@ interface CounterDAO {
     @Query("SELECT * FROM counter WHERE id = :counterId")
     fun getCounterFlow(counterId: Long): Flow<Counter>
 
+    @Query("SELECT * FROM counter WHERE parentId = :parentCounterId")
+    suspend fun getChildCounterList(parentCounterId: Long): List<Counter>?
+
     @Insert
     suspend fun insertCounter(counter: Counter)
 

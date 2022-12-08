@@ -60,6 +60,12 @@ class CounterRepositoryImpl @Inject constructor(
             while(currentUpperThreshold <= nextValue){
                 currentUpperThreshold += current.threshold
                 currentLowerThreshold += current.threshold
+
+                val childCounterIds = counterDAO.getChildCounterList(counterId)?.map { it.id }
+                if(childCounterIds != null && childCounterIds.isNotEmpty()){
+                    incrementCounters(childCounterIds)
+                }
+
             }
 
             updateCounter(current.copy(value = nextValue, upperThreshold = currentUpperThreshold, lowerThreshold = currentLowerThreshold))
@@ -80,12 +86,29 @@ class CounterRepositoryImpl @Inject constructor(
             while(currentLowerThreshold >= nextValue){
                 currentUpperThreshold -= current.threshold
                 currentLowerThreshold -= current.threshold
+
+                val childCounterIds = counterDAO.getChildCounterList(counterId)?.map { it.id }
+                if(childCounterIds != null && childCounterIds.isNotEmpty()){
+                    decrementCounters(childCounterIds)
+                }
             }
 
             updateCounter(current.copy(value = nextValue, lowerThreshold = currentLowerThreshold, upperThreshold = currentUpperThreshold))
         }
         else {
             updateCounter(current.copy(value = nextValue))
+        }
+    }
+
+    private suspend fun incrementCounters(counterIdList: List<Long>){
+        counterIdList.forEach { id ->
+            incrementCounter(id)
+        }
+    }
+
+    private suspend fun decrementCounters(counterIdList: List<Long>){
+        counterIdList.forEach { id ->
+            decrementCounter(id)
         }
     }
 
