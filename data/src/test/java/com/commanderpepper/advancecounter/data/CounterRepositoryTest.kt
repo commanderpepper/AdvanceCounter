@@ -3,7 +3,9 @@ package com.commanderpepper.advancecounter.data
 import app.cash.turbine.test
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.data.repository.CounterRepositoryImpl
-import com.commanderpepper.advancecounter.database.model.Counter
+import com.commanderpepper.advancecounter.model.database.Counter
+import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterUseCase
+import com.commanderpepper.advancecounter.usecase.ConvertCounterToCounterRepoUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -29,7 +31,7 @@ class CounterRepositoryTest {
     @Before
     fun setUpMocks() {
         counterDao = mock(CounterDAO::class.java)
-        counterRepository = CounterRepositoryImpl(counterDao)
+        counterRepository = CounterRepositoryImpl(counterDao, ConvertCounterToCounterRepoUseCase(), ConvertCounterRepoToCounterUseCase())
     }
 
     @Test

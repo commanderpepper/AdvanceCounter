@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.commanderpepper.advancecounter.data.model.CounterRepo
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.data.repository.CounterRepositoryImpl
 import com.commanderpepper.advancecounter.database.room.CounterDAO
 import com.commanderpepper.advancecounter.database.room.CounterDatabase
+import com.commanderpepper.advancecounter.model.repo.CounterRepo
+import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterUseCase
+import com.commanderpepper.advancecounter.usecase.ConvertCounterToCounterRepoUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -33,7 +35,7 @@ class CounterRepositoryWithRoomTest {
             CounterDatabase::class.java
         ).build()
         counterDAO = database.counterDao()
-        counterRepository = CounterRepositoryImpl(counterDAO)
+        counterRepository = CounterRepositoryImpl(counterDAO, ConvertCounterToCounterRepoUseCase(), ConvertCounterRepoToCounterUseCase())
     }
 
     @After
