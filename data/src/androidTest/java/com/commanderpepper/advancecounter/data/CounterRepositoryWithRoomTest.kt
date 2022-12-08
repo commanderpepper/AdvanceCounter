@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.data.repository.CounterRepositoryImpl
 import com.commanderpepper.advancecounter.database.room.CounterDAO
@@ -42,6 +43,51 @@ class CounterRepositoryWithRoomTest {
     @Throws(IOException::class)
     fun closeResources() {
         database.close()
+    }
+
+    @Test
+    fun insertMultipleCountersGetFlowCheckFlow() = runTest {
+        val counterRepoList = List<CounterRepo>(3){
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo $it",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                null
+            )
+        }
+        counterRepoList.forEach {
+            counterRepository.insertCounter(it)
+        }
+        val parents = counterRepository.getParentCounters()
+        parents.test {
+            Assert.assertEquals(3, awaitItem().size)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun insertOneCounterGetCounterRepoFlow() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                null
+            )
+        )
+        val returnedCounter = counterRepository.getCounterFlow(1)
+        returnedCounter.test {
+            Assert.assertEquals("Counter Repo", awaitItem().name)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
