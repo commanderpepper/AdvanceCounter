@@ -89,6 +89,101 @@ class CounterRepositoryWithRoomTest {
     }
 
     @Test
+    fun insertCountersDeleteOneCounterCheckForOneCounter() = runTest {
+        repeat(2){
+            counterRepository.insertCounter(
+                CounterRepo(
+                    id = 0,
+                    name = "Counter Repo",
+                    value = 0,
+                    step = 1,
+                    threshold = 2,
+                    upperThreshold = 1,
+                    lowerThreshold = 1,
+                    null
+                )
+            )
+        }
+        val beforeCounterList = counterRepository.getParentCounters()
+        beforeCounterList.test {
+            Assert.assertEquals(2, awaitItem().size)
+            cancelAndIgnoreRemainingEvents()
+        }
+        counterRepository.deleteCounter(1L)
+        val afterCounterList = counterRepository.getParentCounters()
+        afterCounterList.test {
+            Assert.assertEquals(1, awaitItem().size)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun insertCountersWithChildDeleteOneParentCheckForNoCounters() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                null
+            )
+        )
+
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                1
+            )
+        )
+
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                1
+            )
+        )
+
+        val beforeCounterParentList = counterRepository.getParentCounters()
+        beforeCounterParentList.test {
+            Assert.assertEquals(1, awaitItem().size)
+            cancelAndIgnoreRemainingEvents()
+        }
+        val beforeChildrenList = counterRepository.getChildCounters(1L)
+        beforeChildrenList.test {
+            Assert.assertEquals(2, awaitItem().size)
+            cancelAndIgnoreRemainingEvents()
+        }
+
+        counterRepository.deleteCounter(1L)
+
+        val afterCounterParentList = counterRepository.getParentCounters()
+        afterCounterParentList.test {
+            Assert.assertTrue(awaitItem().isNullOrEmpty())
+            cancelAndIgnoreRemainingEvents()
+        }
+        val afterChildrenList = counterRepository.getChildCounters(1L)
+        afterChildrenList.test {
+            Assert.assertTrue(awaitItem().isNullOrEmpty())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun insertOneCounterGetCounterRepoFlow() = runTest {
         counterRepository.insertCounter(
             CounterRepo(

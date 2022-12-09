@@ -105,6 +105,19 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteCounter(counterId: Long) {
+        val counter = counterDAO.getCounter(counterId)
+        if (counter != null){
+            val childCounters = counterDAO.getChildCounterList(counterId)
+            if(childCounters != null && childCounters.isNotEmpty()){
+                childCounters.forEach {
+                    deleteCounter(it.id)
+                }
+            }
+            counterDAO.deleteCounter(counter)
+        }
+    }
+
     private suspend fun incrementCounters(counterIdList: List<Long>){
         counterIdList.forEach { id ->
             incrementCounter(id)

@@ -1,6 +1,7 @@
 package com.commanderpepper.advancecounter.database.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -32,4 +33,7 @@ interface CounterDAO {
 
     @Update
     suspend fun updateCounter(counter: Counter)
+
+    @Delete
+    suspend fun deleteCounter(counter: Counter)
 }
