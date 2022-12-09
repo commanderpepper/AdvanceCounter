@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterDialog
 import com.commanderpepper.advancecounter.ui.items.CounterItem
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +36,7 @@ fun CounterDetails(
         onPlusClicked = counterDetailsViewModel::plusButtonOnClick,
         onMinusClicked = counterDetailsViewModel::minusButtonOnClick,
         optionsImageResource = counterOptionImageResource,
-        onEditClicked = {},
+        onEditClicked = counterDetailsViewModel::editCounter,
         onDeleteClicked = {}
     )
 }
@@ -53,7 +54,7 @@ fun CounterDetails(
     onPlusClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
     onDeleteClicked: (Long) -> Unit,
-    onEditClicked: (Long) -> Unit
+    onEditClicked: (EditCounterState) -> Unit
 ) {
     val parentCounterItemUIState = parentCounterItemUI.collectAsState()
     val childCountersState = childCounters.collectAsState()

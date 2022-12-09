@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterDialog
 import com.commanderpepper.advancecounter.ui.items.CounterItem
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +48,7 @@ fun ParentCounters(
             onMinusClicked = parentCountersViewModel::minusButtonOnClick,
             counterOptionImageResource = counterOptionImageResource,
             onDeleteClicked = {},
-            onEditClicked = {}
+            onEditClicked = parentCountersViewModel::editCounter
         )
         if (openDialog.value) {
             AddCounterDialog(
@@ -68,7 +69,7 @@ fun ParentCounters(
     onPlusClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
     onDeleteClicked: (Long) -> Unit,
-    onEditClicked: (Long) -> Unit,
+    onEditClicked: (EditCounterState) -> Unit,
     counterOptionImageResource: Int
 ) {
     val parentCountersState = parentCounters.collectAsState()
