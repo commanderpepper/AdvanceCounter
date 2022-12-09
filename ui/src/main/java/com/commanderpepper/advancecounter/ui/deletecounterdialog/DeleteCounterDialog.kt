@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun DeleteCounterDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onConfirmClick: () -> Unit,
     onDismissRequest: () -> Unit
 ){
@@ -22,7 +22,7 @@ fun DeleteCounterDialog(
         },
         dismissButton = {
             Button(onClick = { onDismissRequest() }) {
-                Text(text = "Do not delete")
+                Text(text = "Do Not Delete")
             }
         },
         confirmButton = {

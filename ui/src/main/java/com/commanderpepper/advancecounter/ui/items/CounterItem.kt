@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
 import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.model.ui.editcounter.ExistingCounterState
+import com.commanderpepper.advancecounter.ui.deletecounterdialog.DeleteCounterDialog
 import com.commanderpepper.advancecounter.ui.editcounterdialog.EditCounterDialog
 
 @Composable
@@ -27,6 +28,7 @@ fun CounterItem(
     onDeleteClicked: (Long) -> Unit
 ) {
     val openEditDialog = remember { mutableStateOf(false) }
+    val openDeleteDialog = remember { mutableStateOf(false) }
     Card(modifier = modifier.padding(8.dp)) {
         Column() {
             Column(modifier = Modifier.clickable { counterClicked(counterItemUIState.id) }) {
@@ -45,7 +47,7 @@ fun CounterItem(
                             openEditDialog.value = true
                         },
                         onDeleteClicked = {
-                            onDeleteClicked(counterItemUIState.id)
+                            openDeleteDialog.value = true
                         }
                     )
                 }
@@ -84,7 +86,7 @@ fun CounterItem(
             }
         }
     }
-    if (openEditDialog.value){
+    if (openEditDialog.value) {
         EditCounterDialog(
             existingCounterState = ExistingCounterState(
                 counterId = counterItemUIState.id,
@@ -99,13 +101,20 @@ fun CounterItem(
             }
         )
     }
+    if (openDeleteDialog.value) {
+        DeleteCounterDialog(onConfirmClick = {
+            onDeleteClicked(counterItemUIState.id)
+        }) {
+            openDeleteDialog.value = false
+        }
+    }
 }
 
 @Preview
 @Composable
 fun CounterItemPreview() {
     CounterItem(
-        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1","-7", "7"),
+        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1", "-7", "7"),
         counterClicked = {},
         onMinusClicked = {},
         onPlusClicked = {},
