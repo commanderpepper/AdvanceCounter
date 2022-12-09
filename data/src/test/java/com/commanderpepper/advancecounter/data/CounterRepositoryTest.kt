@@ -60,4 +60,14 @@ class CounterRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `receive empty of counters and check that counter repo works`() = runTest {
+        Mockito.`when`(counterDao.getParentCounters()).thenReturn(null)
+
+        counterRepository.getParentCounters().test {
+            Assert.assertTrue(awaitItem().isNullOrEmpty())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 }

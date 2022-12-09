@@ -360,4 +360,12 @@ class CounterRepositoryWithRoomTest {
         Assert.assertEquals(0L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(-10L, counterRepository.getCounter(1L).lowerThreshold)
     }
+
+    @Test
+    fun insertNoCountersGetCountersCheckForNoCounters() = runTest {
+        val counterFlow = counterRepository.getParentCounters()
+        counterFlow.test {
+            Assert.assertEquals(0, awaitItem().size)
+        }
+    }
 }
