@@ -8,9 +8,11 @@ import androidx.compose.ui.res.painterResource
 
 @Composable
 fun CounterItemOptionsButton(
-                         counterOptionImageResource: Int,
-                         onEditClicked: () -> Unit,
-                         onDeleteClicked: () -> Unit) {
+    counterOptionImageResource: Int,
+    showDeleteOption: Boolean = true,
+    onEditClicked: () -> Unit,
+    onDeleteClicked: () -> Unit
+) {
     val isDropdownMenuVisible = remember { mutableStateOf(false) }
     IconButton(onClick = {
         isDropdownMenuVisible.value = true
@@ -27,14 +29,15 @@ fun CounterItemOptionsButton(
                     isDropdownMenuVisible.value = false
                 }
             )
-            DropdownMenuItem(
-                text = { Text(text = "Delete Counter") },
-                onClick = {
-                    // TODO: Replace with method from view model
-                    onDeleteClicked()
-                    isDropdownMenuVisible.value = false
-                }
-            )
+            if (showDeleteOption) {
+                DropdownMenuItem(
+                    text = { Text(text = "Delete Counter") },
+                    onClick = {
+                        onDeleteClicked()
+                        isDropdownMenuVisible.value = false
+                    }
+                )
+            }
         }
     }
 }

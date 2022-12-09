@@ -80,7 +80,8 @@ fun CounterDetails(
             },
             optionsImageResource = optionsImageResource,
             onDeleteClicked = onDeleteClicked,
-            onEditClicked = onEditClicked
+            onEditClicked = onEditClicked,
+            showDeleteOption = false
         )
         LazyColumn(modifier = modifier) {
             items(items = childCountersState.value, itemContent = { item ->

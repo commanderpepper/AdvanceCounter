@@ -21,6 +21,7 @@ fun CounterItem(
     modifier: Modifier = Modifier,
     counterItemUIState: CounterItemUIState,
     optionsImageResource: Int,
+    showDeleteOption: Boolean = true,
     counterClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
@@ -43,6 +44,7 @@ fun CounterItem(
                     )
                     CounterItemOptionsButton(
                         counterOptionImageResource = optionsImageResource,
+                        showDeleteOption = showDeleteOption,
                         onEditClicked = {
                             openEditDialog.value = true
                         },
