@@ -105,6 +105,7 @@ fun CounterItem(
     }
     if (openDeleteDialog.value) {
         DeleteCounterDialog(onConfirmClick = {
+            openDeleteDialog.value = false
             onDeleteClicked(counterItemUIState.id)
         }) {
             openDeleteDialog.value = false
