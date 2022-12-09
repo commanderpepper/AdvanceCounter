@@ -47,7 +47,7 @@ fun ParentCounters(
             onPlusClicked = parentCountersViewModel::plusButtonOnClick,
             onMinusClicked = parentCountersViewModel::minusButtonOnClick,
             counterOptionImageResource = counterOptionImageResource,
-            onDeleteClicked = {},
+            onDeleteClicked = parentCountersViewModel::deleteCounter,
             onEditClicked = parentCountersViewModel::editCounter
         )
         if (openDialog.value) {

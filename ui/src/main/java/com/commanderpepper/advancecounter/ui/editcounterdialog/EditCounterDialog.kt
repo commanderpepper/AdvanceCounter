@@ -22,7 +22,7 @@ fun EditCounterDialog(
     AlertDialog(
         modifier = modifier,
         title = {
-            Text(text = "Edit a counter")
+            Text(text = "Edit Counter")
         },
         dismissButton = {
             Button(onClick = { onDismissRequest() }) {

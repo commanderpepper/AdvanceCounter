@@ -37,7 +37,7 @@ fun CounterDetails(
         onMinusClicked = counterDetailsViewModel::minusButtonOnClick,
         optionsImageResource = counterOptionImageResource,
         onEditClicked = counterDetailsViewModel::editCounter,
-        onDeleteClicked = {}
+        onDeleteClicked = counterDetailsViewModel::deleteCounter
     )
 }
 

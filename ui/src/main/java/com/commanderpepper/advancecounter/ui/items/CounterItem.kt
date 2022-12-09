@@ -45,7 +45,7 @@ fun CounterItem(
                             openEditDialog.value = true
                         },
                         onDeleteClicked = {
-
+                            onDeleteClicked(counterItemUIState.id)
                         }
                     )
                 }

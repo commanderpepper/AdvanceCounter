@@ -66,4 +66,10 @@ class CounterDetailsViewModel @Inject constructor(
             counterRepository.editCounterName(editCounterState.counterId, editCounterState.counterName)
         }
     }
+
+    fun deleteCounter(counterId: Long){
+        viewModelScope.launch {
+            counterRepository.deleteCounter(counterId)
+        }
+    }
 }
