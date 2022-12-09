@@ -8,10 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
+import com.commanderpepper.advancecounter.model.ui.editcounter.ExistingCounterState
+import com.commanderpepper.advancecounter.ui.editcounterdialog.EditCounterDialog
 
 @Composable
 fun CounterItem(
@@ -21,9 +23,10 @@ fun CounterItem(
     counterClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
-    onEditClicked: (Long) -> Unit,
+    onEditClicked: (EditCounterState) -> Unit,
     onDeleteClicked: (Long) -> Unit
 ) {
+    val openEditDialog = remember { mutableStateOf(false) }
     Card(modifier = modifier.padding(8.dp)) {
         Column() {
             Column(modifier = Modifier.clickable { counterClicked(counterItemUIState.id) }) {
@@ -36,11 +39,14 @@ fun CounterItem(
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 2
                     )
-                    CounterOptionsButton(
+                    CounterItemOptionsButton(
                         counterOptionImageResource = optionsImageResource,
-                        counterId = counterItemUIState.id,
-                        onEditClicked = onEditClicked,
-                        onDeleteClicked = onDeleteClicked
+                        onEditClicked = {
+                            openEditDialog.value = true
+                        },
+                        onDeleteClicked = {
+
+                        }
                     )
                 }
                 Text(
@@ -78,39 +84,20 @@ fun CounterItem(
             }
         }
     }
-}
-
-@Composable
-fun CounterOptionsButton(counterOptionImageResource: Int,
-                         counterId: Long,
-                         onEditClicked: (Long) -> Unit,
-                         onDeleteClicked: (Long) -> Unit) {
-    val isDropdownMenuVisible = remember { mutableStateOf(false) }
-    IconButton(onClick = {
-        isDropdownMenuVisible.value = true
-    }) {
-        val painter = painterResource(id = counterOptionImageResource)
-        Icon(painter = painter, contentDescription = "Add new counter")
-        DropdownMenu(expanded = isDropdownMenuVisible.value, onDismissRequest = {
-            isDropdownMenuVisible.value = false
-        }) {
-            DropdownMenuItem(
-                text = { Text(text = "Edit Counter") },
-                onClick = {
-                    // TODO: Replace with method from view model
-                    onEditClicked(counterId)
-//                    isDropdownMenuVisible.value = false
-                }
-            )
-            DropdownMenuItem(
-                text = { Text(text = "Delete Counter") },
-                onClick = {
-                    // TODO: Replace with method from view model
-                    onDeleteClicked(counterId)
-//                    isDropdownMenuVisible.value = false
-                }
-            )
-        }
+    if (openEditDialog.value){
+        EditCounterDialog(
+            existingCounterState = ExistingCounterState(
+                counterId = counterItemUIState.id,
+                counterName = counterItemUIState.name
+            ),
+            onDismissRequest = {
+                openEditDialog.value = false
+            },
+            onConfirmClick = {
+                openEditDialog.value = false
+                onEditClicked(it)
+            }
+        )
     }
 }
 
