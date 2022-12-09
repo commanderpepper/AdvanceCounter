@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
+import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.usecase.ConvertAddCounterStateToCounterRepoUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterItemUIStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,12 @@ class ParentCountersViewModel @Inject constructor(
             counterRepository.insertCounter(
                 convertAddCounterStateToCounterRepoUseCase(addCounterState = addCounterState, parentId = null)
             )
+        }
+    }
+
+    fun editCounter(editCounterState: EditCounterState){
+        viewModelScope.launch {
+            counterRepository.editCounterName(editCounterState.counterId, editCounterState.counterName)
         }
     }
 }

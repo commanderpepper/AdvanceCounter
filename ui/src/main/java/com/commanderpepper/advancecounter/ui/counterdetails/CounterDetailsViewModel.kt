@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.usecase.ConvertAddCounterStateToCounterRepoUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterItemUIStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,12 @@ class CounterDetailsViewModel @Inject constructor(
                     savedStateHandle.get<String>("counterId")!!.toLong()
                 )
             )
+        }
+    }
+
+    fun editCounter(editCounterState: EditCounterState){
+        viewModelScope.launch {
+            counterRepository.editCounterName(editCounterState.counterId, editCounterState.counterName)
         }
     }
 }
