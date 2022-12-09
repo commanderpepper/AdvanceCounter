@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,10 +100,13 @@ fun AddCounterDialog(
         confirmButton = {
             Button(onClick = {
                 when {
-                    counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
+                    counterValue.value.isDigitsOnly().not() -> {
+                        Toast.makeText(context, "Value must be a number", Toast.LENGTH_SHORT).show()
+                    }
+                    counterStep.value.isDigitsOnly().not() || counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
                         Toast.makeText(context, "Step cannot be less than zero", Toast.LENGTH_SHORT).show()
                     }
-                    counterThreshold.value.isBlank() || counterThreshold.value.toLong() <= 0 -> {
+                    counterThreshold.value.isDigitsOnly().not() || counterThreshold.value.isBlank() || counterThreshold.value.toLong() <= 0 -> {
                         Toast.makeText(context, "Threshold cannot be less than zero", Toast.LENGTH_SHORT).show()
                     }
                     else -> {
