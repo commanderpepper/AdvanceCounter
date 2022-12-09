@@ -70,6 +70,25 @@ class CounterRepositoryWithRoomTest {
     }
 
     @Test
+    fun insertCounterEditCounterCheckCounter() = runTest {
+        counterRepository.insertCounter(
+            CounterRepo(
+                id = 0,
+                name = "Counter Repo",
+                value = 0,
+                step = 1,
+                threshold = 2,
+                upperThreshold = 1,
+                lowerThreshold = 1,
+                null
+            )
+        )
+        counterRepository.editCounterName(1L, "Test")
+        val updatedCounter = counterRepository.getCounter(1L)
+        Assert.assertEquals("Test", updatedCounter.name)
+    }
+
+    @Test
     fun insertOneCounterGetCounterRepoFlow() = runTest {
         counterRepository.insertCounter(
             CounterRepo(
