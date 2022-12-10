@@ -93,7 +93,9 @@ fun CounterItem(
             existingCounterState = ExistingCounterState(
                 counterId = counterItemUIState.id,
                 counterName = counterItemUIState.name,
-                counterStep = counterItemUIState.step
+                counterStep = counterItemUIState.step,
+                counterValue = counterItemUIState.value,
+                counterThreshold = counterItemUIState.threshold
             ),
             onDismissRequest = {
                 openEditDialog.value = false
@@ -118,7 +120,7 @@ fun CounterItem(
 @Composable
 fun CounterItemPreview() {
     CounterItem(
-        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1", "-7", "7"),
+        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1", "-7", "7", "1"),
         counterClicked = {},
         onMinusClicked = {},
         onPlusClicked = {},

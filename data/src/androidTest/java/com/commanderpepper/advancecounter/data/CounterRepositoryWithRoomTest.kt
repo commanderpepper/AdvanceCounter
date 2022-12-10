@@ -83,7 +83,7 @@ class CounterRepositoryWithRoomTest {
                 null
             )
         )
-        counterRepository.editCounterName(1L, "Test")
+        counterRepository.editCounter(1L, "Test", 1, 1, 2)
         val updatedCounter = counterRepository.getCounter(1L)
         Assert.assertEquals("Test", updatedCounter.name)
     }

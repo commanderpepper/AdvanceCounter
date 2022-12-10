@@ -41,7 +41,7 @@ class CounterDetailsViewModel @Inject constructor(
         .stateIn(
             viewModelScope, SharingStarted.WhileSubscribed(5000L),
             CounterItemUIState(
-                id = 0, "", "", "", "", ""
+                id = 0, "", "", "", "", "", ""
             )
         )
 
@@ -70,10 +70,12 @@ class CounterDetailsViewModel @Inject constructor(
 
     fun editCounter(editCounterState: EditCounterState) {
         viewModelScope.launch {
-            counterRepository.editCounterName(
-                editCounterState.counterId,
-                editCounterState.counterName,
-                editCounterState.counterStep
+            counterRepository.editCounter(
+                counterId = editCounterState.counterId,
+                newCounterName = editCounterState.counterName,
+                newCounterStep = editCounterState.counterStep,
+                newCounterValue = editCounterState.counterValue,
+                newCounterThreshold = editCounterState.counterThreshold
             )
         }
     }

@@ -49,8 +49,14 @@ class CounterRepositoryImpl @Inject constructor(
         counterDAO.updateCounter(convertCounterRepoToCounterUseCase(counterRepo))
     }
 
-    override suspend fun editCounterName(counterId: Long, newCounterName: String, newCounterStep: Long) {
-        val counterRepo = getCounter(counterId).copy(name = newCounterName, step = newCounterStep)
+    override suspend fun editCounter(counterId: Long, newCounterName: String, newCounterStep: Long, newCounterValue: Long, newCounterThreshold: Long) {
+        val counterRepo = getCounter(counterId).copy(
+            name = newCounterName,
+            step = newCounterStep,
+            value = newCounterValue,
+            threshold = newCounterThreshold,
+            lowerThreshold = newCounterValue - newCounterThreshold,
+            upperThreshold = newCounterValue + newCounterThreshold)
         updateCounter(counterRepo)
     }
 
