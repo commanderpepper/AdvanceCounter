@@ -1,5 +1,6 @@
 package com.commanderpepper.advancecounter.ui.parentcounters
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.CounterListUIState
 import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.ui.addcounterdialog.AddCounterDialog
+import com.commanderpepper.advancecounter.ui.generic.LoadingIndicator
 import com.commanderpepper.advancecounter.ui.items.CounterItem
 import kotlinx.coroutines.flow.StateFlow
 
@@ -42,7 +45,7 @@ fun ParentCounters(
             })
         ParentCounters(
             modifier = modifier,
-            parentCounters = parentCountersViewModel.parentCounters,
+            parentCounterListUI = parentCountersViewModel.parentCounterListUIState,
             counterOnClick = counterOnClick,
             onPlusClicked = parentCountersViewModel::plusButtonOnClick,
             onMinusClicked = parentCountersViewModel::minusButtonOnClick,
@@ -64,7 +67,7 @@ fun ParentCounters(
 @Composable
 fun ParentCounters(
     modifier: Modifier = Modifier,
-    parentCounters: StateFlow<List<CounterItemUIState>>,
+    parentCounterListUI: StateFlow<CounterListUIState>,
     counterOnClick: (Long) -> Unit,
     onPlusClicked: (Long) -> Unit,
     onMinusClicked: (Long) -> Unit,
@@ -72,18 +75,38 @@ fun ParentCounters(
     onEditClicked: (EditCounterState) -> Unit,
     counterOptionImageResource: Int
 ) {
-    val parentCountersState = parentCounters.collectAsState()
-    LazyColumn(modifier = modifier) {
-        items(items = parentCountersState.value, itemContent = { item ->
-            CounterItem(
-                counterItemUIState = item,
-                counterClicked = counterOnClick,
-                onMinusClicked = onMinusClicked,
-                onPlusClicked = onPlusClicked,
-                optionsImageResource = counterOptionImageResource,
-                onEditClicked = onEditClicked,
-                onDeleteClicked = onDeleteClicked
-            )
-        })
+    val parentCounterListUIState = parentCounterListUI.collectAsState()
+    when (parentCounterListUIState.value) {
+        is CounterListUIState.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = (parentCounterListUIState.value as CounterListUIState.Error).message)
+            }
+        }
+        is CounterListUIState.Success -> {
+            val success = parentCounterListUIState.value as? CounterListUIState.Success
+            success?.let { state ->
+                LazyColumn(modifier = modifier) {
+                    items(items = state.list, itemContent = { item ->
+                        CounterItem(
+                            counterItemUIState = item,
+                            counterClicked = counterOnClick,
+                            onMinusClicked = onMinusClicked,
+                            onPlusClicked = onPlusClicked,
+                            optionsImageResource = counterOptionImageResource,
+                            onEditClicked = onEditClicked,
+                            onDeleteClicked = onDeleteClicked
+                        )
+                    })
+                }
+            }
+        }
+        is CounterListUIState.Loading -> {
+            LoadingIndicator()
+        }
     }
+
 }

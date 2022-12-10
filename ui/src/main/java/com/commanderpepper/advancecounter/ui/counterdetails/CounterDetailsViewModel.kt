@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.commanderpepper.advancecounter.data.repository.CounterRepository
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
 import com.commanderpepper.advancecounter.model.ui.CounterItemUIState
+import com.commanderpepper.advancecounter.model.ui.CounterListUIState
 import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.usecase.ConvertAddCounterStateToCounterRepoUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterItemUIStateUseCase
@@ -22,21 +23,27 @@ class CounterDetailsViewModel @Inject constructor(
     private val convertAddCounterStateToCounterRepoUseCase: ConvertAddCounterStateToCounterRepoUseCase
 ) : ViewModel() {
 
-    val childCounters =
-        counterRepository.getChildCounters(savedStateHandle.get<String>("counterId")!!.toLong())
-            .map { list ->
-                list.map { counterRepo ->
+    private val parentId = savedStateHandle.get<String>("counterId")!!.toLong()
+
+    val childCounterListUIState: StateFlow<CounterListUIState> = counterRepository
+        .getChildCounters(parentId).map { list ->
+            if (list.isNullOrEmpty()) {
+                CounterListUIState.Error("Add a child counter")
+            } else {
+                CounterListUIState.Success(list.map { counterRepo ->
                     convertCounterRepoToCounterItemUIState(counterRepo)
-                }
-            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+                })
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), CounterListUIState.Loading)
 
-
-    val parentCounter: StateFlow<CounterItemUIState> = counterRepository.getCounterFlow(savedStateHandle.get<String>("counterId")!!.toLong()).map { convertCounterRepoToCounterItemUIState(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L),
+    val parentCounter: StateFlow<CounterItemUIState> = counterRepository.getCounterFlow(parentId)
+        .map { convertCounterRepoToCounterItemUIState(it) }
+        .stateIn(
+            viewModelScope, SharingStarted.WhileSubscribed(5000L),
             CounterItemUIState(
                 id = 0, "", "", "", "", ""
             )
-    )
+        )
 
     fun plusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
@@ -55,19 +62,22 @@ class CounterDetailsViewModel @Inject constructor(
             counterRepository.insertCounter(
                 convertAddCounterStateToCounterRepoUseCase(
                     addCounterState,
-                    savedStateHandle.get<String>("counterId")!!.toLong()
+                    parentId
                 )
             )
         }
     }
 
-    fun editCounter(editCounterState: EditCounterState){
+    fun editCounter(editCounterState: EditCounterState) {
         viewModelScope.launch {
-            counterRepository.editCounterName(editCounterState.counterId, editCounterState.counterName)
+            counterRepository.editCounterName(
+                editCounterState.counterId,
+                editCounterState.counterName
+            )
         }
     }
 
-    fun deleteCounter(counterId: Long){
+    fun deleteCounter(counterId: Long) {
         viewModelScope.launch {
             counterRepository.deleteCounter(counterId)
         }
