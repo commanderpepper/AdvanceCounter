@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AdvanceCounter</string>
+    <string name="readable_app_name">Advance Counter</string>
 </resources>
