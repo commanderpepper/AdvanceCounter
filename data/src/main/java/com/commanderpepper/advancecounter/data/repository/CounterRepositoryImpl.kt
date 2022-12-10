@@ -60,7 +60,7 @@ class CounterRepositoryImpl @Inject constructor(
         updateCounter(counterRepo)
     }
 
-    override suspend fun incrementCounter(counterId: Long) {
+    override suspend fun incrementCounterParentToChild(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value + current.step
         // Inform others counters if true
@@ -86,7 +86,7 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun decrementCounter(counterId: Long) {
+    override suspend fun decrementCounterParentToChild(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value - current.step
         // Inform others counters if true
@@ -101,6 +101,56 @@ class CounterRepositoryImpl @Inject constructor(
                 val childCounterIds = counterDAO.getChildCounterList(counterId)?.map { it.id }
                 if(childCounterIds != null && childCounterIds.isNotEmpty()){
                     decrementCounters(childCounterIds)
+                }
+            }
+
+            updateCounter(current.copy(value = nextValue, lowerThreshold = currentLowerThreshold, upperThreshold = currentUpperThreshold))
+        }
+        else {
+            updateCounter(current.copy(value = nextValue))
+        }
+    }
+
+    override suspend fun incrementCounterChildToParent(counterId: Long) {
+        val current = getCounter(counterId)
+        val nextValue = current.value + current.step
+        // Inform parent counters if true
+        if(nextValue >= current.upperThreshold){
+            var currentUpperThreshold = current.upperThreshold
+            var currentLowerThreshold = current.lowerThreshold
+
+            while(currentUpperThreshold <= nextValue){
+                currentUpperThreshold += current.threshold
+                currentLowerThreshold += current.threshold
+
+                if(current.parentId != null){
+                    val parentCounterRepo = getCounter(current.parentId!!)
+                    incrementCounterChildToParent(parentCounterRepo.id)
+                }
+            }
+
+            updateCounter(current.copy(value = nextValue, upperThreshold = currentUpperThreshold, lowerThreshold = currentLowerThreshold))
+        }
+        else {
+            updateCounter(current.copy(value = nextValue))
+        }
+    }
+
+    override suspend fun decrementCounterChildToParent(counterId: Long) {
+        val current = getCounter(counterId)
+        val nextValue = current.value - current.step
+        // Inform parent counters if true
+        if(nextValue <= current.lowerThreshold){
+            var currentUpperThreshold = current.upperThreshold
+            var currentLowerThreshold = current.lowerThreshold
+
+            while(currentLowerThreshold >= nextValue){
+                currentUpperThreshold -= current.threshold
+                currentLowerThreshold -= current.threshold
+
+                if(current.parentId != null){
+                    val parentCounterRepo = getCounter(current.parentId!!)
+                    decrementCounterChildToParent(parentCounterRepo.id)
                 }
             }
 
@@ -126,13 +176,13 @@ class CounterRepositoryImpl @Inject constructor(
 
     private suspend fun incrementCounters(counterIdList: List<Long>){
         counterIdList.forEach { id ->
-            incrementCounter(id)
+            incrementCounterParentToChild(id)
         }
     }
 
     private suspend fun decrementCounters(counterIdList: List<Long>){
         counterIdList.forEach { id ->
-            decrementCounter(id)
+            decrementCounterParentToChild(id)
         }
     }
 

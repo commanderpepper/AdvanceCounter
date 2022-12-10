@@ -18,9 +18,13 @@ interface CounterRepository {
 
     suspend fun editCounter(counterId: Long, newCounterName: String, newCounterStep: Long, newCounterValue: Long, newCounterThreshold: Long)
 
-    suspend fun incrementCounter(counterId: Long)
+    suspend fun incrementCounterParentToChild(counterId: Long)
 
-    suspend fun decrementCounter(counterId: Long)
+    suspend fun decrementCounterParentToChild(counterId: Long)
+
+    suspend fun incrementCounterChildToParent(counterId: Long)
+
+    suspend fun decrementCounterChildToParent(counterId: Long)
 
     suspend fun deleteCounter(counterId: Long)
 }

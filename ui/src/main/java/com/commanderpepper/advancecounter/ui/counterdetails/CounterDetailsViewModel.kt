@@ -47,13 +47,13 @@ class CounterDetailsViewModel @Inject constructor(
 
     fun plusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
-            counterRepository.incrementCounter(counterId)
+            counterRepository.incrementCounterParentToChild(counterId)
         }
     }
 
     fun minusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
-            counterRepository.decrementCounter(counterId)
+            counterRepository.decrementCounterParentToChild(counterId)
         }
     }
 
