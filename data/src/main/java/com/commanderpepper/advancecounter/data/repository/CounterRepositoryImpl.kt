@@ -60,6 +60,26 @@ class CounterRepositoryImpl @Inject constructor(
         updateCounter(counterRepo)
     }
 
+    override suspend fun incrementCounter(counterId: Long) {
+        val counter = getCounter(counterId)
+        if(counter.relationship == 1L){
+            incrementCounterParentToChild(counterId)
+        }
+        else {
+            incrementCounterChildToParent(counterId)
+        }
+    }
+
+    override suspend fun decrementCounter(counterId: Long) {
+        val counter = getCounter(counterId)
+        if(counter.relationship == 1L){
+            decrementCounterParentToChild(counterId)
+        }
+        else {
+            decrementCounterChildToParent(counterId)
+        }
+    }
+
     override suspend fun incrementCounterParentToChild(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value + current.step

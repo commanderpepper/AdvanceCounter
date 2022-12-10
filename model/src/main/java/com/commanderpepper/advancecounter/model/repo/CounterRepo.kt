@@ -8,5 +8,6 @@ data class CounterRepo (
     val threshold: Long,
     val upperThreshold: Long,
     val lowerThreshold: Long,
-    val parentId: Long?
+    val parentId: Long?,
+    val relationship: Long
 )

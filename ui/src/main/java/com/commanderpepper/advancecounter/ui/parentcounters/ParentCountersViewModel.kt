@@ -42,13 +42,15 @@ class ParentCountersViewModel @Inject constructor(
 
     fun plusButtonOnClick(parentCounterId: Long) {
         viewModelScope.launch {
-            counterRepository.incrementCounterParentToChild(parentCounterId)
+            counterRepository.incrementCounter(parentCounterId)
+//            counterRepository.incrementCounterParentToChild(parentCounterId)
         }
     }
 
     fun minusButtonOnClick(parentCounterId: Long) {
         viewModelScope.launch {
-            counterRepository.decrementCounterParentToChild(parentCounterId)
+            counterRepository.decrementCounter(parentCounterId)
+//            counterRepository.decrementCounterParentToChild(parentCounterId)
         }
     }
 

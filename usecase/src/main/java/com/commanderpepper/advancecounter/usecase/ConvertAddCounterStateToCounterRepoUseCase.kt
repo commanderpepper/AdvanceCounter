@@ -15,7 +15,8 @@ class ConvertAddCounterStateToCounterRepoUseCase @Inject constructor() {
             threshold = addCounterState.threshold,
             upperThreshold = addCounterState.value + addCounterState.threshold,
             lowerThreshold = addCounterState.value - addCounterState.threshold,
-            parentId = parentId
+            parentId = parentId,
+            relationship = addCounterState.relationship
         )
     }
 }

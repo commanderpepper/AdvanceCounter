@@ -14,7 +14,8 @@ class ConvertCounterToCounterRepoUseCase @Inject constructor() {
             threshold = counter.threshold,
             upperThreshold = counter.upperThreshold,
             lowerThreshold = counter.lowerThreshold,
-            parentId = counter.parentId
+            parentId = counter.parentId,
+            relationship = counter.relationship
         )
     }
 }

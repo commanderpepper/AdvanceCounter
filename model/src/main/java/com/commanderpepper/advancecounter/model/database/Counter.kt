@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey
  * @param upperThreshold next upper value that will trigger an event informing other counters
  * @param lowerThreshold next lower value that will trigger an event informing other counters
  * @param parentId parent ID of the counter, if null then the counter is a parent
+ * @param relationship when the relationship is 1 then a counter can inform its children, when 2 the child can inform its parent
  */
 @Entity
 data class Counter (
@@ -25,5 +26,7 @@ data class Counter (
     val threshold: Long = 1,
     val upperThreshold: Long = 1,
     val lowerThreshold: Long = -1,
-    val parentId: Long? = null
+    val parentId: Long? = null,
+    @ColumnInfo(defaultValue = "1")
+    val relationship: Long = 1
 )
