@@ -92,7 +92,8 @@ fun CounterItem(
         EditCounterDialog(
             existingCounterState = ExistingCounterState(
                 counterId = counterItemUIState.id,
-                counterName = counterItemUIState.name
+                counterName = counterItemUIState.name,
+                counterStep = counterItemUIState.step
             ),
             onDismissRequest = {
                 openEditDialog.value = false

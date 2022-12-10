@@ -72,7 +72,8 @@ class CounterDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             counterRepository.editCounterName(
                 editCounterState.counterId,
-                editCounterState.counterName
+                editCounterState.counterName,
+                editCounterState.counterStep
             )
         }
     }
