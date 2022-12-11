@@ -31,7 +31,7 @@ fun CounterItem(
     val openEditDialog = remember { mutableStateOf(false) }
     val openDeleteDialog = remember { mutableStateOf(false) }
     Card(modifier = modifier.padding(8.dp)) {
-        Column() {
+        Column(modifier = Modifier.padding(8.dp)) {
             Column(modifier = Modifier.clickable { counterClicked(counterItemUIState.id) }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
