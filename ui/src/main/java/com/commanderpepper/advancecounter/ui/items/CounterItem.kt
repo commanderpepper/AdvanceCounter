@@ -38,7 +38,7 @@ fun CounterItem(
                         modifier = Modifier
                             .padding(4.dp)
                             .weight(9 / 10f),
-                        text = "Name: ${counterItemUIState.name}, ID: ${counterItemUIState.id}",
+                        text = counterItemUIState.name,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 2
                     )
