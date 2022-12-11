@@ -7,5 +7,6 @@ data class CounterItemUIState(
     val step: String,
     val lowerThreshold: String,
     val upperThreshold: String,
-    val threshold: String
+    val threshold: String,
+    val relationship: Long
 )

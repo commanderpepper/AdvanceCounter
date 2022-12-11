@@ -3,6 +3,7 @@ package com.commanderpepper.advancecounter.ui.addcounterdialog
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
@@ -22,7 +24,9 @@ import com.commanderpepper.advancecounter.model.ui.AddCounterState
 fun AddCounterDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    onConfirmClick: (AddCounterState) -> Unit
+    onConfirmClick: (AddCounterState) -> Unit,
+    allowForUserToDefineRelationship: Boolean = false,
+    parentRelationship: Long = 1
 ) {
     val counterName = remember {
         mutableStateOf("")
@@ -35,6 +39,9 @@ fun AddCounterDialog(
     }
     val counterThreshold = remember {
         mutableStateOf("")
+    }
+    val counterRelationship = remember {
+        mutableStateOf(parentRelationship)
     }
 
     val context = LocalContext.current
@@ -90,6 +97,24 @@ fun AddCounterDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = MaterialTheme.typography.bodyMedium
                 )
+                if(allowForUserToDefineRelationship){
+                    Column() {
+                        // Parent to child
+                        Row() {
+                            Checkbox(checked = counterRelationship.value == 1L, onCheckedChange = {
+                                counterRelationship.value = 1L
+                            })
+                            Text(text = "Parent counter effects child counters")
+                        }
+                        // Child to parent
+                        Row() {
+                            Checkbox(checked = counterRelationship.value == 2L, onCheckedChange = {
+                                counterRelationship.value = 2L
+                            })
+                            Text(text = "Child counters effect parent counter")
+                        }
+                    }
+                }
             }
         },
         dismissButton = {
@@ -115,7 +140,8 @@ fun AddCounterDialog(
                                 name = counterName.value,
                                 value = if(counterValue.value.isEmpty()) 0 else counterValue.value.toLong(),
                                 step =  counterStep.value.toLong(),
-                                threshold = counterThreshold.value.toLong()
+                                threshold = counterThreshold.value.toLong(),
+                                relationship = counterRelationship.value
                             )
                         )
                     }
@@ -126,4 +152,16 @@ fun AddCounterDialog(
         },
         onDismissRequest = onDismissRequest
     )
+}
+
+@Preview
+@Composable
+fun AddCounterDialogPreview(){
+    AddCounterDialog(onDismissRequest = { }, onConfirmClick = { } )
+}
+
+@Preview
+@Composable
+fun AddCounterDialogPreviewRelationshipVisible(){
+    AddCounterDialog(onDismissRequest = { }, onConfirmClick = { }, allowForUserToDefineRelationship = true )
 }

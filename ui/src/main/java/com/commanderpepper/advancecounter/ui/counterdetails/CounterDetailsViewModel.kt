@@ -41,7 +41,7 @@ class CounterDetailsViewModel @Inject constructor(
         .stateIn(
             viewModelScope, SharingStarted.WhileSubscribed(5000L),
             CounterItemUIState(
-                id = 0, "", "", "", "", "", ""
+                id = 0, "", "", "", "", "", "", 1L
             )
         )
 

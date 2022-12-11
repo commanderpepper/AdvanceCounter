@@ -13,7 +13,8 @@ class ConvertCounterRepoToCounterItemUIStateUseCase @Inject constructor() {
             step = counterRepo.step.toString(),
             upperThreshold = counterRepo.upperThreshold.toString(),
             lowerThreshold = counterRepo.lowerThreshold.toString(),
-            threshold = counterRepo.threshold.toString()
+            threshold = counterRepo.threshold.toString(),
+            relationship = counterRepo.relationship
         )
     }
 }

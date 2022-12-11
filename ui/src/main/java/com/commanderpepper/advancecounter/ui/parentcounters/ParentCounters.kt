@@ -59,7 +59,8 @@ fun ParentCounters(
                 onConfirmClick = {
                     parentCountersViewModel.addNewParentCounter(it)
                     openDialog.value = false
-                })
+                },
+                allowForUserToDefineRelationship = true)
         }
     }
 }

@@ -120,7 +120,7 @@ fun CounterItem(
 @Composable
 fun CounterItemPreview() {
     CounterItem(
-        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1", "-7", "7", "1"),
+        counterItemUIState = CounterItemUIState(1L, "Test", "10", "1", "-7", "7", "1", 1L),
         counterClicked = {},
         onMinusClicked = {},
         onPlusClicked = {},

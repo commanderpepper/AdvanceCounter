@@ -127,7 +127,8 @@ fun CounterDetails(
                 onConfirmClick = {
                     addCounterOnClick(it)
                     openDialog.value = false
-                })
+                },
+                parentRelationship = parentCounterItemUIState.value.relationship)
         }
     }
 }
