@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.commanderpepper.advancecounter.model.ui.editcounter.EditCounterState
 import com.commanderpepper.advancecounter.model.ui.editcounter.ExistingCounterState
+import com.commanderpepper.advancecounter.ui.isNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,8 +55,8 @@ fun EditCounterDialog(
             Button(
                 onClick = {
                     when {
-                        counterStep.value.isDigitsOnly().not() || counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
-                            Toast.makeText(context, "Step cannot be less than zero", Toast.LENGTH_SHORT).show()
+                        counterValue.value.isNumber().not() -> {
+                            Toast.makeText(context, "Value must be a number", Toast.LENGTH_SHORT).show()
                         }
                         counterStep.value.isDigitsOnly().not() || counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
                             Toast.makeText(context, "Step cannot be less than zero", Toast.LENGTH_SHORT).show()

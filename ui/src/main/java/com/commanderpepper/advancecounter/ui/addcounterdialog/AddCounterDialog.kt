@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.commanderpepper.advancecounter.model.ui.AddCounterState
+import com.commanderpepper.advancecounter.ui.isNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +126,7 @@ fun AddCounterDialog(
         confirmButton = {
             Button(onClick = {
                 when {
-                    counterValue.value.isDigitsOnly().not() -> {
+                    counterValue.value.isNumber().not() -> {
                         Toast.makeText(context, "Value must be a number", Toast.LENGTH_SHORT).show()
                     }
                     counterStep.value.isDigitsOnly().not() || counterStep.value.isBlank() || counterStep.value.toLong() <= 0 -> {
