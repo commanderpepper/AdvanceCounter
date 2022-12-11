@@ -49,7 +49,7 @@ fun AddCounterDialog(
     AlertDialog(
         modifier = modifier,
         title = {
-            Text(text = "Add a counter")
+            Text(text = "Add a counter", style = MaterialTheme.typography.titleMedium)
         },
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -104,14 +104,14 @@ fun AddCounterDialog(
                             Checkbox(checked = counterRelationship.value == 1L, onCheckedChange = {
                                 counterRelationship.value = 1L
                             })
-                            Text(text = "Parent counter effects child counters")
+                            Text(text = "Parent counter effects child counters", style = MaterialTheme.typography.bodyMedium)
                         }
                         // Child to parent
                         Row() {
                             Checkbox(checked = counterRelationship.value == 2L, onCheckedChange = {
                                 counterRelationship.value = 2L
                             })
-                            Text(text = "Child counters effect parent counter")
+                            Text(text = "Child counters effect parent counter", style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                 }

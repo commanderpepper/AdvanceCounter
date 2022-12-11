@@ -2,9 +2,11 @@ package com.commanderpepper.advancecounter.ui.deletecounterdialog
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DeleteCounterDialog(
@@ -15,10 +17,10 @@ fun DeleteCounterDialog(
     AlertDialog(
         modifier = modifier,
         title = {
-            Text("Delete Counter")
+            Text("Delete Counter", style = MaterialTheme.typography.titleMedium)
         },
         text = {
-               Text(text = "Do you want to delete the counter?")
+               Text(text = "Do you want to delete the counter?", style = MaterialTheme.typography.bodyMedium)
         },
         dismissButton = {
             Button(onClick = { onDismissRequest() }) {
@@ -32,4 +34,12 @@ fun DeleteCounterDialog(
         },
         onDismissRequest = onDismissRequest
     )
+}
+
+@Preview
+@Composable
+fun DeleteCounterDialogPreview(){
+    DeleteCounterDialog(onConfirmClick = { }) {
+        
+    }
 }

@@ -43,7 +43,7 @@ fun EditCounterDialog(
     AlertDialog(
         modifier = modifier,
         title = {
-            Text(text = "Edit Counter")
+            Text(text = "Edit Counter", style = MaterialTheme.typography.titleMedium)
         },
         dismissButton = {
             Button(onClick = { onDismissRequest() }) {
