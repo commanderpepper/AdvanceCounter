@@ -56,7 +56,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                null
+                null,
+                relationship = 1
             )
         }
         counterRepoList.forEach {
@@ -80,7 +81,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                null
+                null,
+                relationship = 1
             )
         )
         counterRepository.editCounter(1L, "Test", 1, 1, 2)
@@ -100,7 +102,8 @@ class CounterRepositoryWithRoomTest {
                     threshold = 2,
                     upperThreshold = 1,
                     lowerThreshold = 1,
-                    null
+                    null,
+                    relationship = 1
                 )
             )
         }
@@ -128,7 +131,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                null
+                null,
+                relationship = 1
             )
         )
 
@@ -141,7 +145,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                1
+                1,
+                relationship = 1
             )
         )
 
@@ -154,7 +159,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                1
+                1,
+                relationship = 1
             )
         )
 
@@ -194,7 +200,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 2,
                 upperThreshold = 1,
                 lowerThreshold = 1,
-                null
+                null,
+                relationship = 1
             )
         )
         val returnedCounter = counterRepository.getCounterFlow(1)
@@ -215,7 +222,8 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 10L,
                 upperThreshold = 10L,
-                lowerThreshold = -10L
+                lowerThreshold = -10L,
+                relationship = 1
             )
         )
         val counterRepo = counterRepository.getCounter(1L)
@@ -233,11 +241,12 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 10L,
                 upperThreshold = 10L,
-                lowerThreshold = -10L
+                lowerThreshold = -10L,
+                relationship = 1
             )
         )
         repeat(10) {
-            counterRepository.incrementCounterParentToChild(1L)
+            counterRepository.incrementCounter(this, 1L)
         }
 
         Assert.assertEquals(10L, counterRepository.getCounter(1L).value)
@@ -254,10 +263,11 @@ class CounterRepositoryWithRoomTest {
                 step = 5,
                 threshold = 2L,
                 upperThreshold = 2L,
-                lowerThreshold = -2L
+                lowerThreshold = -2L,
+                relationship = 1
             )
         )
-        counterRepository.incrementCounterParentToChild(1L)
+        counterRepository.incrementCounter(this, 1L)
         Assert.assertEquals(6L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(2L, counterRepository.getCounter(1L).lowerThreshold)
     }
@@ -273,10 +283,11 @@ class CounterRepositoryWithRoomTest {
                 step = 5,
                 threshold = 2L,
                 upperThreshold = 2L,
-                lowerThreshold = -2L
+                lowerThreshold = -2L,
+                relationship = 1
             )
         )
-        counterRepository.decrementCounterParentToChild(1L)
+        counterRepository.decrementCounter(this, 1L)
         Assert.assertEquals(-6L, counterRepository.getCounter(1L).lowerThreshold)
         Assert.assertEquals(-2L, counterRepository.getCounter(1L).upperThreshold)
     }
@@ -292,10 +303,11 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 2L,
                 upperThreshold = 2L,
-                lowerThreshold = -2L
+                lowerThreshold = -2L,
+                relationship = 1
             )
         )
-        counterRepository.incrementCounterParentToChild(1L)
+        counterRepository.incrementCounter(this, 1L)
         Assert.assertEquals(2L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(-2L, counterRepository.getCounter(1L).lowerThreshold)
     }
@@ -311,10 +323,11 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 2L,
                 upperThreshold = 2L,
-                lowerThreshold = -2L
+                lowerThreshold = -2L,
+                relationship = 1
             )
         )
-        counterRepository.decrementCounterParentToChild(1L)
+        counterRepository.decrementCounter(this, 1L)
         Assert.assertEquals(2L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(-2L, counterRepository.getCounter(1L).lowerThreshold)
     }
@@ -330,11 +343,12 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 5L,
                 upperThreshold = 5L,
-                lowerThreshold = -5L
+                lowerThreshold = -5L,
+                relationship = 1
             )
         )
         repeat(5) {
-            counterRepository.incrementCounterParentToChild(1L)
+            counterRepository.incrementCounter(this, 1L)
         }
         Assert.assertEquals(10L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(0L, counterRepository.getCounter(1L).lowerThreshold)
@@ -351,11 +365,12 @@ class CounterRepositoryWithRoomTest {
                 step = 1,
                 threshold = 5L,
                 upperThreshold = 5L,
-                lowerThreshold = -5L
+                lowerThreshold = -5L,
+                relationship = 1
             )
         )
         repeat(5) {
-            counterRepository.decrementCounterParentToChild(1L)
+            counterRepository.decrementCounter(this,1L)
         }
         Assert.assertEquals(0L, counterRepository.getCounter(1L).upperThreshold)
         Assert.assertEquals(-10L, counterRepository.getCounter(1L).lowerThreshold)
@@ -380,7 +395,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 1,
                 upperThreshold = 1,
                 lowerThreshold = -1,
-                null
+                null,
+                relationship = 1
             )
         )
         counterRepository.insertCounter(
@@ -392,11 +408,12 @@ class CounterRepositoryWithRoomTest {
                 threshold = 1,
                 upperThreshold = 1,
                 lowerThreshold = -1,
-                parentId = 1
+                parentId = 1,
+                relationship = 1
             )
         )
 
-        counterRepository.incrementCounterChildToParent(2)
+        counterRepository.incrementCounter(this,2)
 
         val childCounter = counterRepository.getCounter(2L)
         val parentCounter = counterRepository.getCounter(1L)
@@ -417,7 +434,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 1,
                 upperThreshold = 1,
                 lowerThreshold = -1,
-                null
+                null,
+                relationship = 1
             )
         )
         counterRepository.insertCounter(
@@ -429,7 +447,8 @@ class CounterRepositoryWithRoomTest {
                 threshold = 1,
                 upperThreshold = 1,
                 lowerThreshold = -1,
-                parentId = 1
+                parentId = 1,
+                relationship = 1
             )
         )
         counterRepository.insertCounter(
@@ -441,11 +460,12 @@ class CounterRepositoryWithRoomTest {
                 threshold = 1,
                 upperThreshold = 1,
                 lowerThreshold = -1,
-                parentId = 2
+                parentId = 2,
+                relationship = 1
             )
         )
 
-        counterRepository.incrementCounterChildToParent(3L)
+        counterRepository.incrementCounter(this, 3L)
 
         val parentCounter = counterRepository.getCounter(1L)
         val childCounterMiddle = counterRepository.getCounter(2L)
