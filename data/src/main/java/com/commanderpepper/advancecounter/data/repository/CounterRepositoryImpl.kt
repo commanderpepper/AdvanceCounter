@@ -4,8 +4,13 @@ import com.commanderpepper.advancecounter.database.room.CounterDAO
 import com.commanderpepper.advancecounter.model.repo.CounterRepo
 import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterUseCase
 import com.commanderpepper.advancecounter.usecase.ConvertCounterToCounterRepoUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 class CounterRepositoryImpl @Inject constructor(
@@ -13,6 +18,8 @@ class CounterRepositoryImpl @Inject constructor(
     private val convertCounterToCounterRepoUseCase: ConvertCounterToCounterRepoUseCase,
     private val convertCounterRepoToCounterUseCase: ConvertCounterRepoToCounterUseCase
     ): CounterRepository {
+
+    private val mutex = Mutex()
 
     override fun getParentCounters(): Flow<List<CounterRepo>> {
         return counterDAO.getParentCounters().map {
@@ -60,23 +67,31 @@ class CounterRepositoryImpl @Inject constructor(
         updateCounter(counterRepo)
     }
 
-    override suspend fun incrementCounter(counterId: Long) {
-        val counter = getCounter(counterId)
-        if(counter.relationship == 1L){
-            incrementCounterParentToChild(counterId)
-        }
-        else {
-            incrementCounterChildToParent(counterId)
+    override fun incrementCounter(coroutineScope: CoroutineScope, counterId: Long) {
+        coroutineScope.launch(Dispatchers.Default) {
+            mutex.withLock {
+                val counter = getCounter(counterId)
+                if(counter.relationship == 1L){
+                    incrementCounterParentToChild(counterId)
+                }
+                else {
+                    incrementCounterChildToParent(counterId)
+                }
+            }
         }
     }
 
-    override suspend fun decrementCounter(counterId: Long) {
-        val counter = getCounter(counterId)
-        if(counter.relationship == 1L){
-            decrementCounterParentToChild(counterId)
-        }
-        else {
-            decrementCounterChildToParent(counterId)
+    override fun decrementCounter(coroutineScope: CoroutineScope, counterId: Long) {
+        coroutineScope.launch(Dispatchers.Default) {
+            mutex.withLock {
+                val counter = getCounter(counterId)
+                if(counter.relationship == 1L){
+                    decrementCounterParentToChild(counterId)
+                }
+                else {
+                    decrementCounterChildToParent(counterId)
+                }
+            }
         }
     }
 

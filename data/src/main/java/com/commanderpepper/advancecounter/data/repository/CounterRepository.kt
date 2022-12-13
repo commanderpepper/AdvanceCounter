@@ -1,6 +1,7 @@
 package com.commanderpepper.advancecounter.data.repository
 
 import com.commanderpepper.advancecounter.model.repo.CounterRepo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface CounterRepository {
@@ -18,9 +19,9 @@ interface CounterRepository {
 
     suspend fun editCounter(counterId: Long, newCounterName: String, newCounterStep: Long, newCounterValue: Long, newCounterThreshold: Long)
 
-    suspend fun incrementCounter(counterId: Long)
+    fun incrementCounter(coroutineScope: CoroutineScope, counterId: Long)
 
-    suspend fun decrementCounter(counterId: Long)
+    fun decrementCounter(coroutineScope: CoroutineScope, counterId: Long)
 
     suspend fun deleteCounter(counterId: Long)
 }
