@@ -80,7 +80,7 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun incrementCounterParentToChild(counterId: Long) {
+    private suspend fun incrementCounterParentToChild(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value + current.step
         // Inform others counters if true
@@ -106,7 +106,7 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun decrementCounterParentToChild(counterId: Long) {
+    private suspend fun decrementCounterParentToChild(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value - current.step
         // Inform others counters if true
@@ -131,7 +131,7 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun incrementCounterChildToParent(counterId: Long) {
+    private suspend fun incrementCounterChildToParent(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value + current.step
         // Inform parent counters if true
@@ -156,7 +156,7 @@ class CounterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun decrementCounterChildToParent(counterId: Long) {
+    private suspend fun decrementCounterChildToParent(counterId: Long) {
         val current = getCounter(counterId)
         val nextValue = current.value - current.step
         // Inform parent counters if true

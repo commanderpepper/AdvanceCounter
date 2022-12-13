@@ -22,13 +22,5 @@ interface CounterRepository {
 
     suspend fun decrementCounter(counterId: Long)
 
-    suspend fun incrementCounterParentToChild(counterId: Long)
-
-    suspend fun decrementCounterParentToChild(counterId: Long)
-
-    suspend fun incrementCounterChildToParent(counterId: Long)
-
-    suspend fun decrementCounterChildToParent(counterId: Long)
-
     suspend fun deleteCounter(counterId: Long)
 }
