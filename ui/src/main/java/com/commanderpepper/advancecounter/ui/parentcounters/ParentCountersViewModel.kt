@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +24,8 @@ class ParentCountersViewModel @Inject constructor(
     private val convertCounterRepoToCounterItemUIStateUseCase: ConvertCounterRepoToCounterItemUIStateUseCase,
     private val convertAddCounterStateToCounterRepoUseCase: ConvertAddCounterStateToCounterRepoUseCase
 ) : ViewModel() {
+
+    private val lock = Mutex()
 
     val parentCounterListUIState: StateFlow<CounterListUIState> =
         counterRepository.getParentCounters().map { list ->
@@ -42,15 +46,17 @@ class ParentCountersViewModel @Inject constructor(
 
     fun plusButtonOnClick(parentCounterId: Long) {
         viewModelScope.launch {
-            counterRepository.incrementCounter(parentCounterId)
-//            counterRepository.incrementCounterParentToChild(parentCounterId)
+            lock.withLock {
+                counterRepository.incrementCounter(parentCounterId)
+            }
         }
     }
 
     fun minusButtonOnClick(parentCounterId: Long) {
         viewModelScope.launch {
-            counterRepository.decrementCounter(parentCounterId)
-//            counterRepository.decrementCounterParentToChild(parentCounterId)
+            lock.withLock {
+                counterRepository.decrementCounter(parentCounterId)
+            }
         }
     }
 

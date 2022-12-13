@@ -13,6 +13,8 @@ import com.commanderpepper.advancecounter.usecase.ConvertCounterRepoToCounterIte
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,7 @@ class CounterDetailsViewModel @Inject constructor(
     private val convertAddCounterStateToCounterRepoUseCase: ConvertAddCounterStateToCounterRepoUseCase
 ) : ViewModel() {
 
+    private val lock = Mutex()
     private val parentId = savedStateHandle.get<String>("counterId")!!.toLong()
 
     val childCounterListUIState: StateFlow<CounterListUIState> = counterRepository
@@ -47,15 +50,17 @@ class CounterDetailsViewModel @Inject constructor(
 
     fun plusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
-            counterRepository.incrementCounter(counterId)
-//            counterRepository.incrementCounterParentToChild(counterId)
+            lock.withLock {
+                counterRepository.incrementCounter(counterId)
+            }
         }
     }
 
     fun minusButtonOnClick(counterId: Long) {
         viewModelScope.launch {
-            counterRepository.decrementCounter(counterId)
-//            counterRepository.decrementCounterParentToChild(counterId)
+            lock.withLock {
+                counterRepository.decrementCounter(counterId)
+            }
         }
     }
 
