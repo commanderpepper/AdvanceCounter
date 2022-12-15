@@ -1,5 +1,9 @@
 # AdvanceCounter
-A counter app with parent/child relationships made with Compose. You can define counters with custom steps. Each counter has a threshold which when met will trigger either a response in a parent or child counters. 
+https://play.google.com/store/apps/details?id=com.commanderpepper.advancecounter
+
+- A counter app with parent/child relationships made with Compose. 
+- You can define counters with custom steps. 
+- Each counter has a threshold which when met will trigger either a response in a parent or child counters. 
 
 This was built using
 - Room 
